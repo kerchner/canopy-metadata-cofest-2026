@@ -1,6 +1,6 @@
 # Canopy: AI-Assisted Metadata Generation
 
-### ISMB/ECCB 2026 — BOSC CollaborationFest project
+### CollaborationFest 2026 project [CoFest 2026](https://www.open-bio.org/events/bosc-2026/collaborationfest/)
 
 Build a **reusable AI artifact** (a Claude Skill or Project) that turns any researcher's ordinary artifacts — spreadsheets, data dictionaries, protocols, papers — into draft, standards-compliant CEDAR metadata and a bootstrapped Canopy study, using a set of CEDAR Model Context Protocol (MCP) servers. The aim: register FAIR-aligned studies in minutes instead of hours, with a human still in the loop for review.
 
@@ -72,7 +72,6 @@ Create a valid instance of the Step 2 template.
 ### Step 4 — Create the study in Canopy
 Create a new study in Canopy, **bootstrapping it with the CEDAR Study instance from Step 1**, with files attached.
 - `study-metadata.json` (from Step 1) pre-fills the study fields — the *Create Study* page gets a button to upload it.
-- `domain-specific-template.json` + `domain-specific-metadata.json` (Steps 2–3) are recognized, added as a new category, and rendered with the submission.
 
 ```
 researcher's artifacts (xlsx + pdfs)   ── any input; synthetic study = example
@@ -152,17 +151,18 @@ Developers and researchers interested in open biomedical data, metadata standard
 
 | Name | Role | Affiliation |
 |---|---|---|
-| Atti (Egyedi) | Project lead / main contact | Stanford University |
-| Martin | Workflow & pipeline design | Stanford University |
-| Marcos | Canopy / project concept | Stanford University |
+| Atti L. Egyedi | Project lead / main contact | Stanford University |
+| Martin O'Connor | Workflow & pipeline design | Stanford University |
+| Marcos Martínez Romero | Canopy / project concept | Stanford University |
+| Matthew Horridge | Canopy / senior advisor | Stanford University |
 
 *Contributors welcome — open an issue or say hello at the CoFest.*
 
 ## Links
 
 - **Canopy (code):** <https://github.com/canopy-datahub>
+- **Canopy (production):** <https://canopy.stanford.edu/>
 - **Canopy (staging):** <https://staging.canopyplatform.org/>
-- **Canopy (production, coming):** <https://canopy.stanford.edu/>
 - **NIH RADx Data Hub (paper):** <https://publichealth.jmir.org/2025/1/e72677/>
 - **NIH RADx Data Hub (website):** <https://radxdatahub.nih.gov/>
 - **CEDAR Workbench:** <https://cedar.metadatacenter.org/>
