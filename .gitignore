@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Secrets — never commit your CEDAR / BioPortal API keys
+*.key
+secrets.*
+.cedar_api_key
+
+# Generated / scratch output
+output/
+scratch/
+*.log

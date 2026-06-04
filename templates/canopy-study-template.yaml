@@ -1,0 +1,98 @@
+# Canopy STUDY template (flat) — readable mirror
+# ----------------------------------------------
+# The shared, study-level template every Canopy submission uses (derived from
+# the NIH RADx Data Hub study template, powered by CEDAR). In Workflow Step 2
+# the live CEDAR version is pulled from a well-known location with
+# `cedar-rest-mcp` and filled with `cedar-artifact-mcp`.
+#
+# This YAML is the human-readable spec; the authoritative artifact is the
+# CEDAR template (JSON-LD).
+
+template:
+  name: "Canopy Study"
+  description: "Study-level descriptive metadata for a Canopy data hub submission."
+  version: "1.0.0"
+  derived_from: "NIH RADx Data Hub study template (CEDAR)."
+
+fields:
+  - name: study_title
+    type: text
+    required: true
+    example: "Effect of 12-Week Time-Restricted Eating on Glycemic Control in Prediabetic Adults (Synthetic Pilot)"
+
+  - name: study_description
+    type: textarea
+    required: true
+
+  - name: study_id
+    type: text
+    required: true
+    example: "SPbE-2026"
+
+  - name: principal_investigator
+    type: text
+    cardinality: multiple
+    required: true
+
+  - name: institution
+    type: text
+    required: true
+    example: "Stanford University"
+
+  - name: funding_source
+    type: text
+    required: false
+
+  - name: grant_number
+    type: text
+    cardinality: multiple
+    required: false
+
+  - name: study_type
+    type: controlled
+    ontology: NCIT
+    required: true
+    example: "Interventional Study (NCIT:C98388)"
+
+  - name: study_design
+    type: controlled
+    ontology: NCIT
+    required: false
+    example: "randomized controlled trial (NCIT:C15417)"
+
+  - name: keywords
+    type: text
+    cardinality: multiple
+    required: false
+    example: "prediabetes; time-restricted eating; glycemic control"
+
+  - name: start_date
+    type: date
+    required: false
+
+  - name: end_date
+    type: date
+    required: false
+
+  - name: subject_count
+    type: numeric
+    units: count
+    required: false
+    example: 40
+
+  - name: access_level
+    type: controlled
+    ontology: "Canopy value set"
+    required: true
+    example: "open"
+
+  - name: license
+    type: controlled
+    ontology: SPDX
+    required: false
+    example: "CC0-1.0"
+
+  - name: contact_email
+    type: email
+    required: true
+    example: "egyedia@stanford.edu"

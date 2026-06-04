@@ -1,0 +1,136 @@
+# Domain-specific CEDAR template (flat, ontology-controlled)
+# ----------------------------------------------------------
+# ~20 fields describing the metadata of a study's dataset(s).
+# This is the human-readable SPEC of the template a contributor would author
+# with `cedar-artifact-mcp` in Workflow Step 1, then upload to CEDAR.
+#
+# field types:  text | textarea | numeric | date | controlled | email | link
+# "controlled" fields constrain values to a branch/term of the named ontology
+# (looked up via `bioportal-term-mcp`). "example" shows a valid value for the
+# bundled synthetic study (SPbE-2026).
+
+template:
+  name: "Clinical Interventional Dataset — Domain Metadata"
+  description: >-
+    Describes a dataset from a small interventional human study: the condition
+    studied, the intervention, the measurements collected, and how the data file
+    is structured. Designed for the SPbE-2026 synthetic study but reusable.
+  version: "1.0.0"
+  derived_from: "CEDAR template (JSON-LD); this YAML is a readable mirror."
+
+fields:
+  - name: dataset_title
+    type: text
+    required: true
+    example: "Glycemic and anthropometric measurements, TRE vs control, 12 weeks"
+
+  - name: dataset_description
+    type: textarea
+    required: true
+    example: "Subject-level fasting glucose, HbA1c, weight, blood pressure and lipids at baseline and week 12."
+
+  - name: organism
+    type: controlled
+    ontology: NCBITaxon
+    required: true
+    example: "Homo sapiens (NCBITaxon:9606)"
+
+  - name: condition_studied
+    type: controlled
+    ontology: "MONDO / DOID"
+    required: true
+    example: "prediabetes (MONDO:0005827)"
+
+  - name: intervention_type
+    type: controlled
+    ontology: NCIT
+    required: true
+    example: "Dietary Intervention (NCIT:C15311)"
+
+  - name: intervention_description
+    type: text
+    required: false
+    example: "10-hour time-restricted eating window (08:00–18:00)"
+
+  - name: study_design
+    type: controlled
+    ontology: "OBI / NCIT"
+    required: true
+    example: "randomized controlled trial (NCIT:C15417)"
+
+  - name: measurement_assays
+    type: controlled
+    ontology: "OBI / NCIT"
+    cardinality: multiple
+    required: true
+    example: "Fasting Blood Glucose (NCIT:C105585); Hemoglobin A1C (NCIT:C64849)"
+
+  - name: specimen_type
+    type: controlled
+    ontology: "OBI / UBERON"
+    required: false
+    example: "venous blood (UBERON:0013756)"
+
+  - name: anatomical_site
+    type: controlled
+    ontology: UBERON
+    required: false
+    example: "antecubital vein"
+
+  - name: data_modality
+    type: controlled
+    ontology: EDAM
+    required: true
+    example: "tabular clinical measurements"
+
+  - name: subject_count
+    type: numeric
+    units: count
+    required: true
+    example: 40
+
+  - name: sex_distribution
+    type: controlled
+    ontology: NCIT
+    cardinality: multiple
+    required: false
+    example: "female (NCIT:C16576); male (NCIT:C20197)"
+
+  - name: age_range_years
+    type: text
+    required: false
+    example: "40–65"
+
+  - name: intervention_duration_weeks
+    type: numeric
+    units: weeks
+    required: false
+    example: 12
+
+  - name: file_format
+    type: controlled
+    ontology: EDAM
+    required: true
+    example: "XLSX (format:3620)"
+
+  - name: variables_documented_in
+    type: link
+    required: false
+    example: "SPbE-2026_dataset.xlsx#data_dictionary"
+
+  - name: measurement_units_system
+    type: controlled
+    ontology: UO
+    required: false
+    example: "conventional (mg/dL, kg, mmHg)"
+
+  - name: collection_period
+    type: date
+    cardinality: range
+    required: false
+    example: "2026-01 to 2026-04"
+
+  - name: data_steward_email
+    type: email
+    required: true
+    example: "egyedia@stanford.edu"
