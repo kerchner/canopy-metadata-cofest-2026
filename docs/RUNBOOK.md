@@ -1,6 +1,6 @@
 # Runbook — driving the workflow (Steps 1–4)
 
-Step-by-step companion to the [workflow in the README](../README.md#workflow). The goal of CoFest is to build a **reusable artifact (Claude Skill or Project)** that performs these steps on *any* input; this runbook is both the manual procedure and the spec that artifact must automate. Fill in commands as it matures.
+Step-by-step companion to the [workflow in the README](../README.md#workflow). The CoFest goal is to drive these steps with an LLM and **capture the prompts and lessons learned** (with an optional Claude Skill as an extension). This runbook is the manual procedure — the spec your prompts should automate. Fill in commands and prompts as they mature.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ export BIOPORTAL_API_KEY=...
 ```
 
 ## Step 0 — Inputs
-Use the bundled synthetic study in [`../data/synthetic-study/`](../data/synthetic-study/): a dataset spreadsheet, a protocol PDF, and an SOP PDF. (Or bring your own XLSX + PDFs — the artifact must work generically.)
+Use the bundled synthetic study in [`../data/synthetic-study/`](../data/synthetic-study/): the dataset (`.xlsx` with a data-dictionary sheet, plus a `.csv` copy), the ~10-page protocol PDF, and an SOP PDF. (Or bring your own datasets + PDFs — the approach must work generically.)
 
 ## Step 1 — Fill the Canopy Study instance
 Pull the live Canopy Study template from its well-known CEDAR location (`cedar-rest-mcp`). Infer field values from the protocol PDF + spreadsheet, resolve controlled terms with `bioportal-term-mcp`, and produce a valid `study-metadata.json` (`cedar-artifact-mcp`). **Keep this instance — it bootstraps the Canopy study in Step 4.**
@@ -35,4 +35,4 @@ Create a new study in Canopy, bootstrapping it from the **Step 1** `study-metada
 Staging: <https://staging.canopyplatform.org/> · Production (coming): <https://canopy.stanford.edu/>
 
 ## Definition of done
-The reusable artifact takes the example study from raw files to a registered Canopy submission with no manual CEDAR work — both instances validate against their templates, controlled values resolve to real ontology term IDs — and the same artifact runs against a *different* set of input artifacts.
+You can take the example study from raw files to a registered Canopy submission with an LLM doing the heavy lifting — both instances validate against their templates, controlled values resolve to real ontology term IDs — and you've **captured the prompts and a lessons-learned writeup** so someone else could repeat it on *different* inputs. (Extension: the same flow packaged as a one-step Claude Skill.)

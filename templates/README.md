@@ -1,6 +1,6 @@
 # Templates
 
-Two CEDAR templates drive the pipeline. The `.yaml` files here are **readable mirrors / specs** — the authoritative artifacts are CEDAR templates (JSON-LD) authored and validated with [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp).
+Two CEDAR templates drive the workflow. The `.yaml` files here are **readable mirrors / specs** — the authoritative artifacts are CEDAR templates (JSON-LD) authored and validated with [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp).
 
 | File | Role | Created/used in |
 |---|---|---|

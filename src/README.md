@@ -1,14 +1,15 @@
 # src
 
-Home of the **deliverable** — the reusable artifact (Claude Skill or Project) that drives the [Step 1–4 workflow](../README.md#workflow) — plus any helper scripts it needs. Right now it holds the example-data generator.
+Where the **deliverable** lives: the curated **prompts and strategies** that drive the [Step 1–4 workflow](../README.md#workflow), and — as an extension — an optional reusable Claude Skill. Right now it holds the example-data generator.
 
 | File | Purpose |
 |---|---|
 | `gen_data.py` | Regenerates the synthetic *example* study in `../data/synthetic-study/` (fixed seed → reproducible). Needs `openpyxl` and `reportlab`. |
 
-The first CoFest task is choosing the artifact's form (Skill vs. Project — see the README's [Deliverable](../README.md#the-deliverable) section). Likely pieces, whatever the form:
+Expected additions during the CoFest (see the README's [deliverable](../README.md#the-deliverable) section):
 
-- **Instructions / prompt** that walk an LLM through Steps 1–4 against arbitrary inputs.
-- **Artifact parsing helpers** — pull text/tables/headers from XLSX, CSV, data dictionaries, and PDFs to feed the model.
-- **CEDAR MCP orchestration** — author/validate (`cedar-artifact-mcp`), term lookup (`bioportal-term-mcp`), repository push/pull (`cedar-rest-mcp`), view (`cedar-cee-mcp`).
-- **Canopy submission** — bootstrap a study from the Step 1 instance and attach files (Step 4).
+- **`prompts/`** — the prompts that drive Steps 1–4, with notes on order, context to supply, and guardrails.
+- **Helper scripts** (optional) — pull text/tables/headers from XLSX, CSV, data dictionaries, and PDFs to feed the model.
+- **An optional Claude Skill** — packaging the prompts + helpers so the workflow runs in one step. Orchestrates the CEDAR MCP servers: author/validate (`cedar-artifact-mcp`), term lookup (`bioportal-term-mcp`), repository push/pull (`cedar-rest-mcp`), view (`cedar-cee-mcp`), then bootstraps the Canopy study (Step 4).
+
+The narrative writeup (prompts + lessons learned) lives in [`../docs/`](../docs/).
