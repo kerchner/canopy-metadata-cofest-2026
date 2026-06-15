@@ -10,6 +10,6 @@ Expected additions during the CoFest (see the README's [deliverable](../README.m
 
 - **`prompts/`** — the prompts that drive Steps 1–4, with notes on order, context to supply, and guardrails.
 - **Helper scripts** (optional) — pull text/tables/headers from XLSX, CSV, data dictionaries, and PDFs to feed the model.
-- **An optional Claude Skill** — packaging the prompts + helpers so the workflow runs in one step. Orchestrates the CEDAR MCP servers: author/validate (`cedar-artifact-mcp`), term lookup (`bioportal-term-mcp`), repository push/pull (`cedar-rest-mcp`), view (`cedar-cee-mcp`), then bootstraps the Canopy study (Step 4).
+- **An optional Claude Skill** — packaging the prompts + helpers so the workflow runs in one step. Orchestrates the CEDAR MCP servers: author/validate (`cedar-artifact-mcp`), term lookup (`bioportal-term-mcp`), persist/fetch (`cedar-artifact-rest-mcp`), view/fill as a form (`cedar-cee-mcp`), then bootstraps the Canopy study (Step 4).
 
 The narrative writeup (prompts + lessons learned) lives in [`../docs/`](../docs/).

@@ -6,6 +6,33 @@ Work out an **AI-assisted way to describe research data** — turning a research
 
 ---
 
+## At a glance: your CoFest roadmap
+
+Use this as your map. Start with **Dependencies**, do the **Basic track** (the core two-day goal), and reach for the **Advanced track** if you have time. Details for each item are linked.
+
+**① Dependencies — set up once ([details](#getting-started))**
+
+- [ ] Create accounts + API keys for [CEDAR](https://cedar.metadatacenter.org/) and [BioPortal](https://bioportal.bioontology.org/)
+- [ ] Install the toolchains the servers need: **Java + Maven** (three servers) and **`uv`** (Python, for `bioportal-term-mcp` only) — see [Prerequisites](#prerequisites-and-dependencies)
+- [ ] [Install the CEDAR MCP servers](#installing-the-mcp-servers) and connect them to your LLM client
+- [ ] Bring an LLM you can use (Claude, ChatGPT, Gemini, …) — we don't provide a license
+
+**② Basic track — the core two-day goal**
+
+- [ ] [Step 1](#step-1--fill-out-the-existing-canopy-study-template) — fill the Canopy Study template from the example artifacts
+- [ ] [Step 2](#step-2--create-a-domain-specific-template) — design a domain-specific template
+- [ ] [Step 3](#step-3--fill-the-domain-specific-template) — fill it (a valid instance)
+- [ ] [Step 4](#step-4--create-the-study-in-canopy) — create the study in Canopy
+- [ ] **Capture your prompts** and **write up lessons learned** — the [primary deliverable](#the-deliverable)
+
+**③ Advanced track — extensions**
+
+- [ ] Package the workflow as a reusable **Claude Skill** that submits data + creates the study
+- [ ] Run the same prompts across different LLMs and compare
+- [ ] Add confidence / provenance to inferred fields, or evaluate on a held-out study
+
+---
+
 ## Background
 
 [Canopy](https://github.com/canopy-datahub) is an open-source platform for building FAIR-aligned scientific data hubs, derived from the [NIH RADx Data Hub](https://radxdatahub.nih.gov/) and powered by [CEDAR](https://cedar.metadatacenter.org/) metadata templates.
@@ -48,14 +75,14 @@ Putting it together, the **common workflow** is: a researcher has data they want
 
 The work builds **on top of** a set of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers for CEDAR — you orchestrate them, you don't replace them. MCP is an open standard — think of it as a universal adapter that lets an AI assistant call external tools and data sources in a uniform way; an MCP *server* exposes a specific capability (here, a slice of CEDAR or BioPortal) as a set of callable tools. Because MCP is a shared standard, the same servers work across MCP-capable clients — Claude, ChatGPT, and others — so you can bring whatever LLM you have a license for. Each server is **self-documenting**: connect it to your client and it advertises its own tools and parameters, and each repository's README explains setup and usage in detail — start there.
 
-| MCP server                                                                             | Status | What it does                                                                                                                    |
+| MCP server                                                                             | Runtime | What it does                                                                                                                    |
 |----------------------------------------------------------------------------------------|--|---------------------------------------------------------------------------------------------------------------------------------|
-| [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp)           | Production | Author and validate CEDAR templates and metadata instances.                                                                     |
-| [`bioportal-term-mcp`](https://github.com/metadatacenter/bioportal-term-mcp)           | Production | Look up ontology terms in BioPortal so values are anchored to real, standard identifiers instead of guessed free text.          |
-| [`cedar-artifact-rest-mcp`](https://github.com/metadatacenter/cedar-artifact-rest-mcp) | Production | Interact with the CEDAR repository itself — save generated metadata, fetch existing templates, search what's already published. |
-| [`cedar-cee-mcp`](https://github.com/metadatacenter/cedar-cee-mcp)                     | Production | View/render a template or an instance (alternative to the CEDAR UI).                                                            |
+| [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp)           | **Java** | Author and validate CEDAR templates and metadata instances **in memory** — build templates/fields/elements, fill instances, convert between YAML and CEDAR JSON. |
+| [`bioportal-term-mcp`](https://github.com/metadatacenter/bioportal-term-mcp)           | **Python (`uv`)** | Look up ontology terms in BioPortal so values are anchored to real, standard identifiers (IRIs) instead of guessed free text. |
+| [`cedar-artifact-rest-mcp`](https://github.com/metadatacenter/cedar-artifact-rest-mcp) | **Java** | The I/O counterpart to `cedar-artifact-mcp`: **persist and fetch** artifacts on a live CEDAR server (create / get / update / delete / server-side validate). |
+| [`cedar-cee-mcp`](https://github.com/metadatacenter/cedar-cee-mcp)                     | **Java** | **Show a template or instance as a form** in the browser — read-only to review, or editable so a person fills it in (via the CEDAR Embeddable Editor), with the result flowing back. |
 
-Links to all four live in [Links](#links) — some are published and some are landing shortly. Treat each repo's own docs as the source of truth for how to run it.
+All four are public — see [Links](#links). Treat each repo's own README as the source of truth for setup. The one runtime split worth noting: **only `bioportal-term-mcp` runs on Python (`uv`)** — the other three are **Java** (and `cedar-artifact-mcp` additionally needs a local build of `cedar-artifact-library`, per its README).
 
 > **API keys:** Working against live CEDAR and BioPortal requires free accounts and API keys. See [Getting Started](#getting-started). Never commit keys — `.gitignore` already excludes the usual files.
 
@@ -67,13 +94,13 @@ The workflow has two halves: first **describe** the study with CEDAR (Steps 1–
 
 ### Step 1 — Fill out the existing Canopy Study template
 *What:* produce a filled **Canopy Study** instance from the artifacts. *Why:* every Canopy submission is built around a study, and Canopy provides a single generic study-metadata template (title, investigators, design, dates, …) that every study must populate. Filling it is the unavoidable first step, and an LLM can draft most of it by reading the protocol and dataset rather than the researcher typing it by hand. This instance also **bootstraps the study in Step 4**, so it's worth getting right first.
-- The Canopy Study template is an existing CEDAR template (readable mirror in [`templates/`](templates/)); pull it live from its well-known CEDAR location with **`cedar-rest-mcp`**.
+- The Canopy Study template is an existing CEDAR template (readable mirror in [`templates/`](templates/)); pull it live from its well-known CEDAR location with **`cedar-artifact-rest-mcp`**.
 - Fill a valid instance from the PDFs/datasets with **`cedar-artifact-mcp`**, anchoring controlled values via **`bioportal-term-mcp`**.
 
 ### Step 2 — Create a domain-specific template
 *What:* design a new CEDAR template that captures the metadata specific to *this* study's data (target shape in [`templates/domain-specific-template.yaml`](templates/domain-specific-template.yaml)). *Why:* the generic Study template describes the study, but not the particulars of the dataset — its condition, assays, organism, units, identifiers. A domain-specific template captures those, and crucially it constrains key fields to **controlled terms** so values are interoperable. A *controlled term* is a value drawn from an agreed vocabulary (an ontology) instead of free text — so "prediabetes" resolves to one canonical concept rather than a dozen spellings. **BioPortal** is the repository of biomedical ontologies those terms come from; the `bioportal-term-mcp` server looks them up. Controlled terms are what make a dataset findable and comparable across studies.
 - Author the template with **`cedar-artifact-mcp`**; resolve controlled terms with **`bioportal-term-mcp`**.
-- Upload it to CEDAR with **`cedar-rest-mcp`**; view/verify with **`cedar-cee-mcp`** or the CEDAR UI.
+- Upload it to CEDAR with **`cedar-artifact-rest-mcp`**; view/verify with **`cedar-cee-mcp`** or the CEDAR UI.
 
 ### Step 3 — Fill the domain-specific template
 *What:* create a **valid instance** of the Step 2 template. *Why:* a template is just the empty form — the actual descriptive metadata only exists once it's filled in and conforms to the template (right field types, allowed values, required fields present). A *valid* instance is one CEDAR accepts as conforming; validity is what lets Canopy trust and publish the metadata downstream.
@@ -182,15 +209,33 @@ canopy-metadata-cofest-2026/
 
 ## Getting Started
 
-> Detailed, step-by-step instructions live in [`docs/`](docs/). High-level setup:
+> Detailed, step-by-step instructions live in [`docs/RUNBOOK.md`](docs/RUNBOOK.md). Work through the setup below in order; it maps to **① Dependencies** in the [roadmap](#at-a-glance-your-cofest-roadmap).
 
-1. **Accounts & keys** — create free accounts and generate API keys:
-   - CEDAR: <https://cedar.metadatacenter.org/>
-   - BioPortal (for `bioportal-term-mcp`): <https://bioportal.bioontology.org/>
-   Export them as environment variables (e.g. `CEDAR_API_KEY`, `BIOPORTAL_API_KEY`). **Do not commit keys.**
-2. **Install the MCP servers** — [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp) and [`bioportal-term-mcp`](https://github.com/metadatacenter/bioportal-term-mcp) (plus `cedar-rest-mcp` / `cedar-cee-mcp` as they become available), and register them with your LLM client (Claude, ChatGPT/Codex, etc.).
-3. **Grab the example data** — the synthetic study in [`data/synthetic-study/`](data/synthetic-study/) to work against.
-4. **Drive [Steps 1–4](#workflow)** with your LLM (see [`docs/RUNBOOK.md`](docs/RUNBOOK.md)), and **capture the prompts and lessons learned** as you go — that's the deliverable.
+### Prerequisites and dependencies
+
+The CEDAR MCP servers run locally, so you need their toolchains installed before you can connect them:
+
+- **Java (17+) and Maven** — required for the three JVM-based servers (`cedar-artifact-mcp`, `cedar-artifact-rest-mcp`, `cedar-cee-mcp`). Note `cedar-artifact-mcp` also needs a local build of `cedar-artifact-library` — see its README.
+- **[`uv`](https://docs.astral.sh/uv/)** (with Python 3.11+) — needed for the one Python server, **`bioportal-term-mcp`**.
+- **An LLM client with MCP/tool support** — Claude, ChatGPT, Gemini, etc. **Bring your own license; we don't provide one.**
+
+> Each server's repo lists its exact requirements — treat those as the source of truth. If you'd rather not install by hand, your LLM/AI assistant can often install Java and `uv` and wire up the servers for you; just ask it to.
+
+### Accounts & API keys
+
+Create free accounts and generate API keys, then export them as environment variables (`CEDAR_API_KEY`, `BIOPORTAL_API_KEY`). **Never commit keys** — `.gitignore` already excludes the usual files.
+
+- CEDAR: <https://cedar.metadatacenter.org/>
+- BioPortal (for `bioportal-term-mcp`): <https://bioportal.bioontology.org/>
+
+### Installing the MCP servers
+
+The [four MCP servers](#mcp-servers-the-foundation) are **self-documenting** — each repository's README is the authoritative install/usage guide. The short version: clone each server and build/install per its README — `mvn package` for the three Java servers (`cedar-artifact-mcp`, `cedar-artifact-rest-mcp`, `cedar-cee-mcp`), `uv sync` for the one Python server (`bioportal-term-mcp`) — then **register each with your LLM client** (e.g. in `~/.claude.json`) so it can call their tools. Confirm the tools appear in your client before moving on.
+
+### Run
+
+1. **Grab the example data** — the synthetic study in [`data/synthetic-study/`](data/synthetic-study/).
+2. **Drive [Steps 1–4](#workflow)** with your LLM (see [`docs/RUNBOOK.md`](docs/RUNBOOK.md)), and **capture the prompts and lessons learned** as you go — that's the deliverable.
 
 ## Who should join
 
@@ -217,9 +262,10 @@ Developers and researchers interested in open biomedical data, metadata standard
 - **NIH RADx Data Hub (website):** <https://radxdatahub.nih.gov/>
 - **CEDAR Workbench:** <https://cedar.metadatacenter.org/>
 - **Model Context Protocol:** <https://modelcontextprotocol.io/>
-- **CEDAR Artifact MCP:** <https://github.com/metadatacenter/cedar-artifact-mcp>
-- **BioPortal Term MCP:** <https://github.com/metadatacenter/bioportal-term-mcp>
-- **CEDAR REST MCP** and **CEDAR CEE MCP:** under `github.com/metadatacenter` (published / landing shortly)
+- **CEDAR Artifact MCP** (Java): <https://github.com/metadatacenter/cedar-artifact-mcp>
+- **BioPortal Term MCP** (Python / `uv`): <https://github.com/metadatacenter/bioportal-term-mcp>
+- **CEDAR Artifact REST MCP** (Java): <https://github.com/metadatacenter/cedar-artifact-rest-mcp>
+- **CEDAR CEE MCP** (Java): <https://github.com/metadatacenter/cedar-cee-mcp>
 
 ## License
 
