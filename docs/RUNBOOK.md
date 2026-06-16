@@ -8,7 +8,7 @@ Step-by-step companion to the [workflow in the README](../README.md#workflow). T
 - **An LLM client** with MCP/tool support (Claude, ChatGPT, Gemini, …). Bring your own license — none is provided.
 - A CEDAR account + API key — <https://cedar.metadatacenter.org/>
 - A BioPortal account + API key — <https://bioportal.bioontology.org/>
-- The CEDAR MCP servers installed and registered with your LLM client (each repo's README is the install guide):
+- The CEDAR MCP servers installed and registered with your LLM client — follow **[INSTALL_MCPS.md](INSTALL_MCPS.md)** (download script + paste config; nothing to build):
   - [`cedar-artifact-mcp`](https://github.com/metadatacenter/cedar-artifact-mcp) — Java — author/validate templates & instances in memory
   - [`bioportal-term-mcp`](https://github.com/metadatacenter/bioportal-term-mcp) — Python (`uv`) — ontology term lookups
   - [`cedar-artifact-rest-mcp`](https://github.com/metadatacenter/cedar-artifact-rest-mcp) — Java — persist/fetch artifacts on a live CEDAR server
@@ -26,7 +26,7 @@ Use the bundled synthetic study in [`../data/synthetic-study/`](../data/syntheti
 Pull the live Canopy Study template from its well-known CEDAR location (`cedar-artifact-rest-mcp`). Infer field values from the protocol PDF + spreadsheet, resolve controlled terms with `bioportal-term-mcp`, and produce a valid `study-metadata.json` (`cedar-artifact-mcp`). **Keep this instance — it bootstraps the Canopy study in Step 4.**
 
 ## Step 2 — Create a domain-specific template
-Design a flat, ontology-controlled template for the dataset (see [`../templates/domain-specific-template.yaml`](../templates/domain-specific-template.yaml) for the target shape). Author it with `cedar-artifact-mcp`, resolve controlled terms with `bioportal-term-mcp`, upload with `cedar-artifact-rest-mcp`, and verify with `cedar-cee-mcp` or the CEDAR UI.
+Design a flat, ontology-controlled template for the dataset — roughly 20 fields that mirror the example dataset's columns, with controlled terms where they fit (condition → MONDO, country → GAZ, sex → NCIT), external identifiers (ORCID, PubMed ID, DOI), and proper types (numeric, date, boolean) instead of all strings. Designing this is the point — there's no template to copy. Author it with `cedar-artifact-mcp`, resolve controlled terms with `bioportal-term-mcp`, upload with `cedar-artifact-rest-mcp`, and verify with `cedar-cee-mcp` or the CEDAR UI.
 
 ## Step 3 — Fill the domain-specific instance
 Pull the template authored in Step 2. Infer values from the artifacts, produce a valid `domain-specific-metadata.json`, and upload it to CEDAR.
