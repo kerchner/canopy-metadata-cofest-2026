@@ -1,98 +1,259 @@
-# Canopy STUDY template (flat) — readable mirror
-# ----------------------------------------------
-# The shared, study-level template every Canopy submission uses (derived from
-# the NIH RADx Data Hub study template, powered by CEDAR). In Workflow Step 2
-# the live CEDAR version is pulled from a well-known location with
-# `cedar-rest-mcp` and filled with `cedar-artifact-mcp`.
-#
-# This YAML is the human-readable spec; the authoritative artifact is the
-# CEDAR template (JSON-LD).
-
-template:
-  name: "Canopy Study"
-  description: "Study-level descriptive metadata for a Canopy data hub submission."
-  version: "1.0.0"
-  derived_from: "NIH RADx Data Hub study template (CEDAR)."
-
-fields:
-  - name: study_title
-    type: text
-    required: true
-    example: "Effect of 12-Week Time-Restricted Eating on Glycemic Control in Prediabetic Adults (Synthetic Pilot)"
-
-  - name: study_description
-    type: textarea
-    required: true
-
-  - name: study_id
-    type: text
-    required: true
-    example: "SPbE-2026"
-
-  - name: principal_investigator
-    type: text
-    cardinality: multiple
-    required: true
-
-  - name: institution
-    type: text
-    required: true
-    example: "Stanford University"
-
-  - name: funding_source
-    type: text
-    required: false
-
-  - name: grant_number
-    type: text
-    cardinality: multiple
-    required: false
-
-  - name: study_type
-    type: controlled
-    ontology: NCIT
-    required: true
-    example: "Interventional Study (NCIT:C98388)"
-
-  - name: study_design
-    type: controlled
-    ontology: NCIT
-    required: false
-    example: "randomized controlled trial (NCIT:C15417)"
-
-  - name: keywords
-    type: text
-    cardinality: multiple
-    required: false
-    example: "prediabetes; time-restricted eating; glycemic control"
-
-  - name: start_date
-    type: date
-    required: false
-
-  - name: end_date
-    type: date
-    required: false
-
-  - name: subject_count
-    type: numeric
-    units: count
-    required: false
-    example: 40
-
-  - name: access_level
-    type: controlled
-    ontology: "Canopy value set"
-    required: true
-    example: "open"
-
-  - name: license
-    type: controlled
-    ontology: SPDX
-    required: false
-    example: "CC0-1.0"
-
-  - name: contact_email
-    type: email
-    required: true
-    example: "egyedia@stanford.edu"
+type: template
+name: Canopy Study Metadata Specification
+modelVersion: 1.6.0
+version: 0.0.1
+status: draft
+description: >-
+  Study-level metadata for a Canopy data hub submission. The field set mirrors the
+  Canopy study registration form (derived from the RADx Data Hub Study Metadata
+  Specification). Plain-typed: controlled vocabularies are enforced by the Canopy
+  application code-lists, not embedded in this template (matching the source template).
+children:
+  - key: title
+    type: text-field
+    name: Study Name
+    configuration:
+      required: true
+  - key: description
+    type: text-area-field
+    name: Study Description
+    configuration:
+      required: true
+  - key: center
+    type: text-field
+    name: Center
+  - key: accessLevel
+    type: radio-field
+    name: Access Level
+    values:
+      - label: "Public"
+      - label: "Limited"
+      - label: "Private"
+    configuration:
+      required: true
+  - key: has_ic
+    type: radio-field
+    name: Institutional Certification
+    values:
+      - label: "Yes"
+      - label: "No"
+  - key: data_sharing_info
+    type: radio-field
+    name: Data Sharing & Submission Information
+    values:
+      - label: "Yes"
+      - label: "No"
+  - key: pi_name
+    type: text-field
+    name: PI Name
+    configuration:
+      required: true
+  - key: pi_email
+    type: email-field
+    name: PI Email
+    configuration:
+      required: true
+  - key: pi_institution
+    type: text-field
+    name: PI Institution
+    configuration:
+      required: true
+  - key: pi_assistant_name
+    type: text-field
+    name: Data Submitter Name
+    configuration:
+      required: true
+  - key: pi_assistant_email
+    type: email-field
+    name: Data Submitter Email
+    configuration:
+      required: true
+  - key: po_name
+    type: text-field
+    name: NIH Program Officer
+    configuration:
+      required: true
+  - key: grant_number
+    type: text-field
+    name: Grant or Contract Number(s)
+    configuration:
+      required: true
+      multiple: true
+  - key: FOA_number
+    type: text-field
+    name: FOA Number
+    configuration:
+      required: true
+      multiple: true
+  - key: institutes_supporting_study
+    type: text-field
+    name: NIH Institute / Center
+    configuration:
+      required: true
+      multiple: true
+  - key: studystartdate
+    type: temporal-field
+    name: Study Start Date
+    datatype: xsd:date
+    granularity: day
+    configuration:
+      required: true
+  - key: studyenddate
+    type: temporal-field
+    name: Study End Date
+    datatype: xsd:date
+    granularity: day
+    configuration:
+      required: true
+  - key: data_submission_date
+    type: temporal-field
+    name: Submission Date
+    datatype: xsd:date
+    granularity: day
+  - key: data_submission_timeline_details
+    type: text-field
+    name: Data submission timeline details
+  - key: data_target_delivery_date
+    type: temporal-field
+    name: Target Data Delivery Date
+    datatype: xsd:date
+    granularity: day
+  - key: estimated_participants
+    type: numeric-field
+    name: Estimated Number of Study Participants
+    datatype: xsd:int
+  - key: data_storage_size
+    type: numeric-field
+    name: Estimated Study Data Size (GB)
+    datatype: xsd:decimal
+  - key: is_multi_center
+    type: radio-field
+    name: Multi-Center Study
+    values:
+      - label: "Yes"
+      - label: "No"
+  - key: multi_center_sites
+    type: text-field
+    name: Study Sites
+  - key: data_access_points
+    type: text-field
+    name: Data Availability
+    configuration:
+      multiple: true
+  - key: topics
+    type: text-field
+    name: Study Domain
+    configuration:
+      required: true
+      multiple: true
+  - key: source
+    type: text-field
+    name: Data Collection Methods
+    configuration:
+      required: true
+      multiple: true
+  - key: study_population_focus
+    type: text-field
+    name: Study Population Focus
+    configuration:
+      required: true
+      multiple: true
+  - key: subject
+    type: text-field
+    name: Keywords
+    configuration:
+      required: true
+      multiple: true
+  - key: types
+    type: text-field
+    name: Study Design
+    configuration:
+      required: true
+      multiple: true
+  - key: CT_URL
+    type: link-field
+    name: Clinical Trials.gov URL
+  - key: study_website_URL
+    type: link-field
+    name: Study Website URL
+  - key: publication_URL
+    type: link-field
+    name: Primary Publication URL
+    configuration:
+      multiple: true
+  - key: data_species
+    type: text-field
+    name: Species
+    configuration:
+      multiple: true
+  - key: data_sample_collection
+    type: text-field
+    name: Sample Collection
+    configuration:
+      multiple: true
+  - key: data_general_types
+    type: text-field
+    name: Data Types
+    configuration:
+      multiple: true
+  - key: data_genomic
+    type: text-field
+    name: Genomic Data Types
+    configuration:
+      multiple: true
+  - key: data_phenotype
+    type: text-field
+    name: Phenotypes
+    configuration:
+      multiple: true
+  - key: data_sample_types
+    type: text-field
+    name: Sample Types
+    configuration:
+      multiple: true
+  - key: data_genotype
+    type: text-field
+    name: Genotypes
+    configuration:
+      multiple: true
+  - key: data_sequencing
+    type: text-field
+    name: Sequencing Data Types
+    configuration:
+      multiple: true
+  - key: data_analyses
+    type: text-field
+    name: Genomic Analyses Types
+    configuration:
+      multiple: true
+  - key: data_array_data
+    type: text-field
+    name: Genomic Array Data Types
+    configuration:
+      multiple: true
+  - key: acknowledgement_statement
+    type: text-area-field
+    name: Acknowledgment Statement
+    configuration:
+      required: true
+  - key: general_research_group
+    type: text-field
+    name: General Research Use
+    configuration:
+      multiple: true
+  - key: health_biomed_group
+    type: text-field
+    name: Health/Medical/Biomedical
+    configuration:
+      multiple: true
+  - key: disease_specific_group
+    type: text-field
+    name: Conditions/Diseases
+    configuration:
+      multiple: true
+  - key: disease_specific_related_conditions
+    type: text-field
+    name: Related Conditions
+  - key: other_group_description
+    type: text-field
+    name: Other Data Use Limitations
