@@ -136,7 +136,7 @@ The dataset columns deliberately span varied CEDAR field types — numeric, date
 | `reference_pmid` | identifier | PubMed ID |
 | `protocol_doi` | identifier | DOI |
 
-These are AI-generated and entirely fictional — no real subjects or results. Regenerate with `python3 src/gen_data.py`.
+These are AI-generated and entirely fictional — no real subjects or results.
 
 ## Get Going
 
