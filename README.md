@@ -2,34 +2,9 @@
 
 ### CollaborationFest 2026 project - [CoFest 2026](https://www.open-bio.org/events/bosc-2026/collaborationfest/)
 
-Work out an **AI-assisted way to describe research data** — turning a researcher's ordinary artifacts (spreadsheets, data dictionaries, protocols, papers) into standards-compliant CEDAR metadata and a registered Canopy study, with a human in the loop. The tangible output of the CoFest is a **set of prompts and strategies, plus a short lessons-learned writeup**, that drive a four-step workflow over our CEDAR Model Context Protocol (MCP) servers — and, as an extension, a reusable Claude Skill. **Bring your own LLM** (Claude, ChatGPT, Gemini, …); we don't provide a license. The aim: register FAIR-aligned studies in minutes instead of hours.
+A CollaborationFest 2026 project on **describing research data with AI**. Using an LLM together with our CEDAR tools, you turn ordinary research files — spreadsheets, protocols, papers — into standards-compliant metadata and a registered Canopy study, with a person reviewing along the way.
 
----
-
-## At a glance: your CoFest roadmap
-
-Use this as your map. Start with **Dependencies**, do the **Basic track** (the core two-day goal), and reach for the **Advanced track** if you have time. Details for each item are linked.
-
-**① Dependencies — set up once ([details](#getting-started))**
-
-- [ ] Create accounts + API keys for [CEDAR](https://cedar.metadatacenter.org/) and [BioPortal](https://bioportal.bioontology.org/)
-- [ ] Install the toolchains the servers need: **Java 17+** and **`uv`** — see [Prerequisites](#prerequisites-and-dependencies)
-- [ ] [Install the CEDAR MCP servers](docs/INSTALL_MCPS.md) and connect them to your LLM client
-- [ ] Bring an LLM you can use (Claude, ChatGPT, Gemini, …) — we don't provide a license
-
-**② Basic track — the core two-day goal**
-
-- [ ] [Step 1](#step-1--fill-out-the-existing-canopy-study-template) — fill the Canopy Study template from the example artifacts
-- [ ] [Step 2](#step-2--create-a-domain-specific-template) — design a domain-specific template
-- [ ] [Step 3](#step-3--fill-the-domain-specific-template) — fill it (a valid instance)
-- [ ] [Step 4](#step-4--create-the-study-in-canopy) — create the study in Canopy
-- [ ] **Capture your prompts** and **write up lessons learned** — the [primary deliverable](#the-deliverable)
-
-**③ Advanced track — extensions**
-
-- [ ] Package the workflow as a reusable **Claude Skill** that submits data + creates the study
-- [ ] Run the same prompts across different LLMs and compare
-- [ ] Add confidence / provenance to inferred fields, or evaluate on a held-out study
+New to Canopy or CEDAR? Start with **Background** and **Goals** below — they explain the what and why. The **Project checklist** then lays out exactly what to do.
 
 ---
 
@@ -47,7 +22,7 @@ A natural foundation for this work is the set of **CEDAR MCP servers** we mainta
 
 The point of the CoFest is **developing and understanding** how to drive metadata description with AI — not shipping a finished product. So the tangible output is **prompts, strategies, and a lessons-learned document**, not (necessarily) software. The bundled synthetic study is only an example input; whatever you develop should generalize to *any* researcher's datasets and documents.
 
-### Core goals (the 2-day focus)
+### Core goals
 
 1. **Drive the [4-step workflow](#workflow) with an LLM of your choice** — fill the Canopy Study template, design a domain-specific template, fill it, and create the study in Canopy — using the CEDAR MCP servers.
 2. **Capture the prompts and strategies that worked** — the prompts, the order of operations, what to feed the model, where it goes wrong, and how to recover. This is the primary deliverable.
@@ -60,6 +35,38 @@ The point of the CoFest is **developing and understanding** how to drive metadat
 - Confidence scores / provenance on each inferred field, so reviewers know what to check first.
 - Evaluate against a held-out study to measure how much manual effort the approach actually saves.
 - Try the same prompts across different LLMs (Claude, ChatGPT, Gemini) and compare.
+
+---
+
+## Project checklist
+
+What to do, start to finish. **Requirements** are things you need *before* you begin; **Initial configuration** is the one-time setup; then the **core tasks**, with **optional extensions** if you have time.
+
+### Requirements — check before you start
+
+- [ ] An LLM you can use (Claude, ChatGPT, Gemini, …) — **you bring the license; we don't provide one**
+- [ ] Able to create free accounts at [CEDAR](https://cedar.metadatacenter.org/) and [BioPortal](https://bioportal.bioontology.org/)
+- [ ] A machine that can run **Java 17+** and **`uv`**
+
+### ① Initial configuration — set up once ([details](#getting-started))
+
+- [ ] Create your [CEDAR](https://cedar.metadatacenter.org/) and [BioPortal](https://bioportal.bioontology.org/) API keys
+- [ ] Install **Java 17+** and **`uv`** — see [Prerequisites](#prerequisites-and-dependencies)
+- [ ] [Install the CEDAR MCP servers](docs/INSTALL_MCPS.md) and connect them to your LLM client
+
+### ② Core tasks
+
+- [ ] [Step 1](#step-1--fill-out-the-existing-canopy-study-template) — fill the Canopy Study template from the example artifacts
+- [ ] [Step 2](#step-2--create-a-domain-specific-template) — design a domain-specific template
+- [ ] [Step 3](#step-3--fill-the-domain-specific-template) — fill it (a valid instance)
+- [ ] [Step 4](#step-4--create-the-study-in-canopy) — create the study in Canopy
+- [ ] **Capture your prompts** and **write up lessons learned** — the [primary deliverable](#the-deliverable)
+
+### ③ Optional extensions
+
+- [ ] Package the workflow as a reusable **Claude Skill** that submits data + creates the study
+- [ ] Run the same prompts across different LLMs and compare
+- [ ] Add confidence / provenance to inferred fields, or evaluate on a held-out study
 
 ## About Canopy and CEDAR
 
@@ -209,7 +216,7 @@ canopy-metadata-cofest-2026/
 
 ## Getting Started
 
-> Detailed, step-by-step instructions live in [`docs/RUNBOOK.md`](docs/RUNBOOK.md). Work through the setup below in order; it maps to **① Dependencies** in the [roadmap](#at-a-glance-your-cofest-roadmap).
+> Detailed, step-by-step instructions live in [`docs/RUNBOOK.md`](docs/RUNBOOK.md). Work through the setup below in order; it maps to **① Initial configuration** in the [Project checklist](#project-checklist).
 
 ### Prerequisites and dependencies
 
