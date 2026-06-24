@@ -10,13 +10,15 @@ New to Canopy or CEDAR? Start with **Background** and **Goals** below — they e
 
 ## Background
 
-[Canopy](https://github.com/canopy-datahub) is an open-source platform for building FAIR-aligned scientific data hubs, derived from the [NIH RADx Data Hub](https://radxdatahub.nih.gov/) and powered by [CEDAR](https://cedar.metadatacenter.org/) metadata templates.
+Research data is only as reusable as it is well described. For a dataset to be shared, found, and reused by others, it has to be documented with **structured metadata** — what the study was, who ran it, what was measured, in what units, using which standard terms. Producing that metadata by hand is slow, tedious, and error-prone — the "blank page" problem — and it is one of the biggest reasons otherwise valuable datasets never get described well enough to be discovered and reused. Lowering that barrier is central to making data FAIR: findable, accessible, interoperable, and reusable.
 
-A common barrier for data contributors is the effort required to complete structured metadata forms by hand before a study or data file can be registered. Filling these forms is slow, error-prone, and intimidating — the "blank page" problem — and it is one of the biggest reasons otherwise valuable datasets never get described well enough to be found and reused.
+This work sits on top of two established open systems. **[Canopy](https://github.com/canopy-datahub)** is generalist **repository infrastructure**: a researcher registers a *study* and submits both its **data files** and the **metadata** describing them, and Canopy makes the result findable and downloadable according to an access policy (it is derived from the [NIH RADx Data Hub](https://radxdatahub.nih.gov/)). Every submission is organized around a study, and Canopy ships with a **generic study-metadata template** that every study fills in — the "Canopy Study template" referenced throughout this document.
 
-In this CoFest project we will prototype an **AI-assisted workflow** that reads common research artifacts (CSV/Excel files, data dictionaries, supplementary PDFs, protocols, grants, papers) and generates **draft CEDAR-compatible metadata for human review**. The goal is not to replace expert curation, but to reduce blank-page friction, suggest likely values, anchor those values to real ontology terms, and make metadata submission faster and more consistent.
+**[CEDAR](https://cedar.metadatacenter.org/)** (the Center for Expanded Data Annotation and Retrieval) is the metadata standard those templates follow. A **template** is a reusable blueprint defining *what* metadata to capture — its fields, their types, and which values are allowed (for example, a "country" field must come from a controlled list, or a date must be a real date). An **instance** is a single record *filled in* against a template. A template is the empty form; an instance is the completed one.
 
-A natural foundation for this work is the set of **CEDAR MCP servers** we maintain — focused tool servers that let an LLM use CEDAR directly, without each AI integration having to reinvent the wiring (see [About Canopy and CEDAR](#about-canopy-and-cedar) and [MCP Servers](#mcp-servers-the-foundation) below).
+Today, describing a dataset for one of these hubs is largely **manual**: a person designs or picks the template, then fills in valid instances field by field. That hand-work is the friction — and the reason so much data stays poorly described.
+
+**The overall goal of this project is an AI-assisted workflow that does this for you** — reading a researcher's ordinary files (spreadsheets, data dictionaries, protocols, papers) and producing the standards-compliant metadata and the registered study that otherwise have to be built by hand, with a person reviewing along the way.
 
 ## Goals
 
@@ -67,16 +69,6 @@ What to do, start to finish. **Requirements** are things you need *before* you b
 - [ ] Package the workflow as a reusable **Claude Skill** that submits data + creates the study
 - [ ] Run the same prompts across different LLMs and compare
 - [ ] Add confidence / provenance to inferred fields, or evaluate on a held-out study
-
-## About Canopy and CEDAR
-
-If you're new to these systems, here's the context you need before the rest of the proposal makes sense.
-
-**Canopy** is open-source, generalist **repository infrastructure**: it lets a researcher register a *study* and submit both its **data files** and the **metadata** that describes them, then makes the result findable and downloadable by others according to an access policy. It is derived from the NIH RADx Data Hub and is the platform our metadata ultimately lands in. Every Canopy submission is organized around a study, and Canopy ships with a **generic study-metadata template** that every study must fill in (title, investigators, design, and so on) — this is the "Canopy Study template" referenced throughout this document.
-
-**CEDAR** (the Center for Expanded Data Annotation and Retrieval) is the metadata engine underneath. Two CEDAR concepts matter here. A **template** is a reusable blueprint that defines *what* metadata to capture — its fields, their data types, and which values are allowed (for example, that a "country" field must come from a controlled list, or that a date field must be a real date). An **instance** is a single record that has been *filled in* against a template — the actual values for one study or one dataset. A template is the empty form; an instance is the completed form. CEDAR instances are stored as JSON-LD, so a "valid instance" is one whose values conform to its template.
-
-Putting it together, the **common workflow** is: a researcher has data they want to share; before it can be submitted they must describe it — locate the data, extract the relevant facts, and define the structure that captures them. They then go to **Canopy to submit** the study and its files, and lean on **CEDAR to describe** everything properly with templates and instances. The friction is in that description step, and that is exactly what this project tries to assist with AI — and, as an extension, what a Skill could automate end-to-end: describe the data, create the study, and submit.
 
 ## MCP Servers (the foundation)
 
