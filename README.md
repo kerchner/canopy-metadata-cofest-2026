@@ -98,20 +98,19 @@ The workflow has two halves: first **describe** the study with CEDAR (Steps 1–
 - `study-metadata.json` (from Step 1) pre-fills the study fields — the *Create Study* page gets a button to upload it.
 - The submission then follows Canopy's normal [Submission Workflow](#submission-workflow), and what others can see is governed by [Access Control](#access-control).
 
-```
-researcher's artifacts (xlsx + pdfs)   ── any input; synthetic study = example
-        │
-        ▼
-[Step 1] fill Canopy Study instance  ◄── pull Study template from CEDAR
-        │                                   (this instance bootstraps Step 4)
-        ▼
-[Step 2] design domain template      ──► CEDAR
-        │
-        ▼
-[Step 3] fill domain instance        ◄── pull domain template from CEDAR
-        │
-        ▼
-[Step 4] create study in Canopy ◄── bootstrap from Step 1 instance + attach files
+```mermaid
+flowchart LR
+    A["Researcher's artifacts<br/>(xlsx + PDFs)"] -->|any input — synthetic study is the example| S1["Step 1<br/>Fill Canopy Study instance"]
+    S1 --> S2["Step 2<br/>Design domain template"]
+    S2 --> S3["Step 3<br/>Fill domain instance"]
+    S3 --> S4["Step 4<br/>Create study in Canopy"]
+
+    CEDAR[("CEDAR")] -. pull Study template .-> S1
+    S2 -. save template .-> CEDAR
+    CEDAR -. pull domain template .-> S3
+
+    S1 -. instance bootstraps Step 4 .-> S4
+    S4 -->|attach files| Canopy[("Canopy")]
 ```
 
 ## Submission Workflow
