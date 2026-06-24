@@ -138,10 +138,6 @@ The dataset columns deliberately span varied CEDAR field types — numeric, date
 
 These are AI-generated and entirely fictional — no real subjects or results. Regenerate with `python3 src/gen_data.py`.
 
-## Who Should Join
-
-Developers and researchers interested in open biomedical data, metadata standards, FAIR data hubs, schema-driven software, ontologies, and practical uses of AI in open science. Comfort with Python, JSON/JSON-LD, or LLM tooling helps, but there's room at every level — parsing, extraction, validation, ontology mapping, and UI all need hands.
-
 ## Team
 
 | Name | Role | Affiliation |
@@ -151,23 +147,23 @@ Developers and researchers interested in open biomedical data, metadata standard
 | Marcos Martínez Romero | Canopy / project concept | Stanford University |
 | Matthew Horridge | Canopy / senior advisor | Stanford University |
 
-*Contributors welcome — open an issue or say hello at the CoFest.*
-
 ## Links
 
-- **Canopy (code):** <https://github.com/canopy-datahub>
-- **Canopy (production):** <https://canopy.stanford.edu/>
-- **Canopy tutorial — Submission Workflow:** <https://canopy.stanford.edu/tutorial?tutorial=submissionWorkflow>
-- **Canopy tutorial — Data Access Control:** <https://canopy.stanford.edu/tutorial?tutorial=dataAccessControl>
-- **NIH RADx Data Hub (paper):** <https://publichealth.jmir.org/2025/1/e72677/>
-- **NIH RADx Data Hub (website):** <https://radxdatahub.nih.gov/>
-- **CEDAR Workbench:** <https://cedar.metadatacenter.org/>
-- **Model Context Protocol:** <https://modelcontextprotocol.io/>
-- **MCP install guide:** [docs/INSTALL_MCPS.md](docs/INSTALL_MCPS.md)
-- **CEDAR Artifact MCP** (Java): <https://github.com/metadatacenter/cedar-artifact-mcp>
-- **BioPortal Term MCP** (Python / `uv`): <https://github.com/metadatacenter/bioportal-term-mcp>
-- **CEDAR Artifact REST MCP** (Java): <https://github.com/metadatacenter/cedar-artifact-rest-mcp>
-- **CEDAR CEE MCP** (Java): <https://github.com/metadatacenter/cedar-cee-mcp>
+| Resource | Link |
+|---|---|
+| Canopy (code) | <https://github.com/canopy-datahub> |
+| Canopy (production) | <https://canopy.stanford.edu/> |
+| Canopy tutorial — Submission Workflow | <https://canopy.stanford.edu/tutorial?tutorial=submissionWorkflow> |
+| Canopy tutorial — Data Access Control | <https://canopy.stanford.edu/tutorial?tutorial=dataAccessControl> |
+| NIH RADx Data Hub (paper) | <https://publichealth.jmir.org/2025/1/e72677/> |
+| NIH RADx Data Hub (website) | <https://radxdatahub.nih.gov/> |
+| CEDAR Workbench | <https://cedar.metadatacenter.org/> |
+| Model Context Protocol | <https://modelcontextprotocol.io/> |
+| MCP install guide | [docs/INSTALL_MCPS.md](docs/INSTALL_MCPS.md) |
+| CEDAR Artifact MCP (Java) | <https://github.com/metadatacenter/cedar-artifact-mcp> |
+| BioPortal Term MCP (Python / `uv`) | <https://github.com/metadatacenter/bioportal-term-mcp> |
+| CEDAR Artifact REST MCP (Java) | <https://github.com/metadatacenter/cedar-artifact-rest-mcp> |
+| CEDAR CEE MCP (Java) | <https://github.com/metadatacenter/cedar-cee-mcp> |
 
 ## License
 
