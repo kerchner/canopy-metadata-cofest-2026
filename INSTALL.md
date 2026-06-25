@@ -1,6 +1,6 @@
 # MCP servers — install
 
-> One-time setup. Gets the four CEDAR MCP servers running with your LLM client so you can drive the [workflow](../README.md#workflow). For *what* the servers are and *why*, see the [main README](../README.md#mcp-servers).
+> One-time setup. Gets the four CEDAR MCP servers running with your LLM client so you can drive the [workflow](README.md#workflow). For *what* the servers are and *why*, see the [main README](README.md#mcp-servers).
 
 Four small MCP servers let your AI assistant work with metadata templates end to end —
 authoring them, looking up ontology terms, filling them out as forms in your browser, and saving
@@ -19,6 +19,7 @@ and Cline**. (VS Code's built-in MCP support uses a different configuration form
 
 ## What you'll need
 
+- **An MCP-capable LLM client** (Claude, ChatGPT, Gemini, …) — you bring the license; we don't provide one.
 - **Java 17 or newer** — runs the three Java servers.
 - **[uv](https://docs.astral.sh/uv/)** — runs the Python server, and the install script below.
 - **Two free API keys** — one each from BioPortal and CEDAR (that's step 1, next).
@@ -37,16 +38,16 @@ script in step 2 (or it'll prompt you for them):
 
 ## 2. Download the servers and create an MCP configuration file
 
-Run one command. It downloads the four servers and prints a ready-to-paste configuration block for your
-client, with the file paths and your keys already filled in:
+Run one command **from the repo root**. It downloads the four servers and prints a ready-to-paste
+configuration block for your client, with the file paths and your keys already filled in:
 
 ```bash
-uv run download_mcps.py --cedar-key YOUR_CEDAR_KEY --bioportal-key YOUR_BIOPORTAL_KEY
+uv run scripts/download_mcps.py --cedar-key YOUR_CEDAR_KEY --bioportal-key YOUR_BIOPORTAL_KEY
 ```
 
 - Leave a key off and it'll simply ask you for it.
 - Want the files somewhere other than `~/mcp`? Add `--dir /your/path`.
-- Don't use `uv`? `python3 download_mcps.py` works the same way.
+- Don't use `uv`? `python3 scripts/download_mcps.py` works the same way.
 
 The configuration it produces is a small block of **JSON** — the standard way an LLM client is told
 which MCP servers exist and how to launch each one. The script writes it to
@@ -86,10 +87,10 @@ the servers and connected to them.
 ## Updating to a new version
 
 If we need to ship updates to the MCP servers during the hackathon, you can pick them up by
-**running the same command again**, then restarting your client:
+**running the same command again** from the repo root, then restarting your client:
 
 ```bash
-uv run download_mcps.py
+uv run scripts/download_mcps.py
 ```
 
 It pulls the newest version of each server and refreshes everything. Your configuration doesn't change, so
@@ -100,7 +101,7 @@ when updating — otherwise the new jars land in a different folder than the one
 points at, and your client keeps running the old ones:
 
 ```bash
-uv run download_mcps.py --dir /your/path
+uv run scripts/download_mcps.py --dir /your/path
 ```
 
 ## Notes & troubleshooting

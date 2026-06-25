@@ -13,10 +13,10 @@ old process, so duplicate generations pile up; and a SIGTERM to the wrapper does
 the real process, leaving true orphans (reparented to init/launchd). Those orphans hold the uv
 cache lock that can stall download_mcps.py, and they waste memory. This sweeps them cleanly.
 
-  uv run stop_mcps.py            # list what's running (no killing)
-  uv run stop_mcps.py stop       # stop them (prompts to confirm)
-  uv run stop_mcps.py stop --yes # stop them, no prompt (for scripts/CI)
-  uv run stop_mcps.py --dir ~/mcp ...   # match jars in a non-default folder
+  uv run scripts/stop_mcps.py            # list what's running (no killing)
+  uv run scripts/stop_mcps.py stop       # stop them (prompts to confirm)
+  uv run scripts/stop_mcps.py stop --yes # stop them, no prompt (for scripts/CI)
+  uv run scripts/stop_mcps.py --dir ~/mcp ...   # match jars in a non-default folder
 
 Scope is deliberately tight: it only matches the exact jar paths under --dir and the specific
 bioportal-term-mcp uvx package, so it can never catch unrelated java or python processes.

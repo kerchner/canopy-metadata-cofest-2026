@@ -12,9 +12,9 @@ Cross-platform: macOS / Linux / Windows.
 Settings are plain command-line options — no environment variables needed. Anything you leave out
 is asked for (or reused from a previous run):
 
-  uv run download_mcps.py
-  uv run download_mcps.py --dir ~/mcp --cedar-key APIKEYHERE --bioportal-key APIKEYHERE
-  python3 download_mcps.py        # if you already have Python 3
+  uv run scripts/download_mcps.py
+  uv run scripts/download_mcps.py --dir ~/mcp --cedar-key APIKEYHERE --bioportal-key APIKEYHERE
+  python3 scripts/download_mcps.py        # if you already have Python 3
 
 Get the keys:  CEDAR  -> cedar.metadatacenter.org (your profile)
                BioPortal -> bioportal.bioontology.org/account
