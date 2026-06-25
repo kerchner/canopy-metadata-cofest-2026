@@ -16,13 +16,13 @@ git clone https://github.com/YOUR_USERNAME/canopy-metadata-cofest-2026.git
 cd canopy-metadata-cofest-2026
 ```
 
-> **Do your work in [`work/`](work/).** Keep everything you produce — filled instances, your
+> **Do your work in `work/`.** Keep everything you produce — filled instances, your
 > domain-specific template, prompts, the lessons-learned writeup — in that folder. Run every command
 > below **from the repo root**.
 
 ## 2. Install the prerequisites
 
-You need **Java 17+** (runs three of the servers) and **[uv](https://docs.astral.sh/uv/)** (runs the
+You need **Java 17+** (runs three of the servers) and **uv** (runs the
 Python server and the install script).
 
 ```bash
@@ -36,7 +36,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 sudo apt-get install -y openjdk-17-jdk        # Debian/Ubuntu
 ```
 
-On Windows, install [Temurin 17+](https://adoptium.net/) and [uv](https://docs.astral.sh/uv/).
+On Windows, install [Temurin 17+](https://adoptium.net/) and uv.
 
 Verify — each prints a version, and Java must be **17 or newer**:
 
@@ -55,11 +55,13 @@ it'll prompt you for them):
   right on that page.
 - **CEDAR** (used by `cedar-artifact-rest-mcp`) — sign in, or create a free account, at
   [cedar.metadatacenter.org](https://cedar.metadatacenter.org). Once logged in, click the person
-  icon in the top-right corner to open your profile, where your API key is shown.
+  icon in the top-right corner to open your profile, where your API key is shown. CEDAR may display
+  it as `apiKey <RAWKEY>` — the key itself is **only the `<RAWKEY>` part**. The `apiKey ` prefix is
+  just the `Authorization` header value (e.g. for `curl`), not part of the key, so don't include it.
 
 > **Never commit your keys.** `.gitignore` already excludes the usual files.
 
-## 4. Download the servers and create the config
+## 4. Download the MCPs and create the config
 
 Run one command **from the repo root**. It downloads the four servers and prints a ready-to-paste
 configuration block for your client, with the file paths and your keys already filled in:
@@ -103,31 +105,56 @@ On Windows, Claude Desktop is at `%APPDATA%\Claude\claude_desktop_config.json` a
 > `claude mcp add cedar-artifact --scope user -- "$(which java)" -jar "$HOME/mcp/cedar-artifact-mcp.jar"`
 > (add `--env KEY=value` for the rest/bioportal keys). The pasted block works just as well.
 
-## 6. Check it worked
+## 6. Check that it worked
 
 In the client you just set up, ask the LLM (Claude, or whichever model you're using) to *"ping all
-four MCP servers."* Each one should answer — that confirms the client started the servers and
-connected to them. Now go to the [workflow](README.md#workflow).
+four MCP servers."* Each one should answer with a `pong` and its build version — something like:
+
+| MCP server | Status | Build |
+|---|---|---|
+| cedar-artifact | ✅ pong | cedar-artifact-mcp 0.1.17 |
+| cedar-artifact-rest | ✅ pong | cedar-artifact-rest-mcp 0.1.17 |
+| cedar-cee | ✅ pong | cedar-cee-mcp 0.1.17 |
+| bioportal-term | ✅ pong | bioportal-term-mcp 0.1.17 |
+
+If all four answer, the client started the servers and connected to them. Now go to the
+[workflow](README.md#workflow).
 
 ## Updating to a new version
 
-If we need to ship updates to the MCP servers during the hackathon, you can pick them up by
-**running the same command again** from the repo root, then restarting your client:
+If we ship updates to the MCP servers during the hackathon, picking them up is the **same command
+again** — but the order matters, because your client keeps a running copy of each server in memory.
+A running server holds onto the old jar, so you won't see the new version until the client
+relaunches it. Do it in this order:
+
+1. **Quit your LLM client first** (fully quit, not just close the window) so it releases the running
+   servers.
+2. **Update** from the repo root:
+
+   ```bash
+   uv run scripts/download_mcps.py
+   ```
+
+   It pulls the newest version of each server and refreshes everything. Your configuration doesn't
+   change, so there's nothing to re-paste. (If you installed the jars somewhere other than `~/mcp`
+   with `--dir`, pass that **same `--dir`** here, or the new jars land where your config isn't
+   looking: `uv run scripts/download_mcps.py --dir /your/path`.)
+3. **Restart your client**, then **ping all four again** (see [step 6](#6-check-that-it-worked)) and
+   confirm the **Build** versions went up — that's how you know you're running the new ones.
+
+### If something looks off
+
+If a server misbehaves or seems stuck on an old version, there's a companion script that finds and
+kills the running servers:
 
 ```bash
-uv run scripts/download_mcps.py
+uv run scripts/stop_mcps.py            # list what's running
+uv run scripts/stop_mcps.py stop       # stop them (prompts to confirm)
 ```
 
-It pulls the newest version of each server and refreshes everything. Your configuration doesn't change, so
-there's nothing to re-paste.
-
-If you installed the jars somewhere other than `~/mcp` (using `--dir`), pass that **same `--dir`**
-when updating — otherwise the new jars land in a different folder than the one your configuration
-points at, and your client keeps running the old ones:
-
-```bash
-uv run scripts/download_mcps.py --dir /your/path
-```
+**Stop your LLM client before running it.** While the client is up it will just respawn any server
+you kill — so quit the client first, run `stop_mcps.py stop`, then re-run `download_mcps.py` and
+restart the client.
 
 ## Notes & troubleshooting
 
