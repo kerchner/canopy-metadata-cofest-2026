@@ -16,7 +16,7 @@ This work sits on top of two established open systems. **[Canopy](https://github
 
 Today, describing a dataset for one of these hubs is largely **manual**: a person designs or picks the template, then fills in valid instances field by field. That hand-work is the friction — and the reason so much data stays poorly described.
 
-**The overall goal of this project is an AI-assisted workflow that does this for you** — reading a researcher's ordinary files (spreadsheets, data dictionaries, protocols, papers) and producing the standards-compliant metadata and the registered study that otherwise have to be built by hand, with a person reviewing along the way.
+**The overall goal of this project is an AI-assisted workflow that does this for you** — reading a researcher's ordinary files (spreadsheets, data dictionaries, protocols, papers) and producing the standards-compliant metadata and the registered study that otherwise have to be built by hand.
 
 ## Goals
 
@@ -25,13 +25,13 @@ The point of the CoFest is **developing and understanding** how to drive metadat
 1. **Drive the 4-step workflow with an LLM of your choice** — fill the Canopy Study template, design a domain-specific template, fill it, and create the study in Canopy — using the CEDAR MCP servers.
 2. **Capture the prompts and strategies that worked** — the prompts, the order of operations, what to feed the model, where it goes wrong, and how to recover. This is the primary deliverable.
 3. **Write up lessons learned** — a short document distilling what works, what doesn't, and recommendations for doing this reliably and generically.
-4. **Prove it on the example.** Run your approach against the bundled synthetic study and show the four steps complete end-to-end.
+4. **Prove it on the example.** Run your approach against the bundled synthetic study, end-to-end.
 
 ---
 
 ## MCP Servers
 
-To work with CEDAR (and BioPortal) from an LLM, we use a set of handy **MCP servers** — you connect them to your LLM client and call them; there's no integration to build yourself. The four we use are listed below.
+To work with CEDAR (and BioPortal) from an LLM, we use a set of **MCP servers** — you connect them to your LLM client and call them; there's no integration to build yourself. The four we use are listed below.
 
 > **What's an MCP?** The Model Context Protocol is an open standard — a universal adapter that lets an AI assistant call external tools and data sources in a uniform way. An MCP *server* exposes a specific capability (here, a slice of CEDAR or BioPortal) as a set of callable tools. Because it's a shared standard, the same servers work across MCP-capable clients — Claude, ChatGPT, and others — so you can bring whatever LLM you have a license for.
 
@@ -70,7 +70,7 @@ The workflow is four steps: fill the Canopy Study template (Step 1), design a do
 - Infer values from the artifacts and build the instance with **`cedar-artifact-mcp`**; upload it to CEDAR.
 
 ### Step 4 — Create the Study in Canopy
-*What:* register a new study in Canopy, **bootstrapping it from the Step 1 Study instance**, and attach the files. *Why:* this is where description becomes a real, shareable record — the point of the whole exercise. Instead of re-keying everything into the Canopy *Create Study* form, the Step 1 metadata pre-fills it.
+*What:* register a new study in Canopy, **bootstrapping it from the Step 1 Study instance**, and attach the files. *Why:* this is where description becomes a real, shareable record. Instead of re-keying everything into the Canopy *Create Study* form, the Step 1 metadata pre-fills it.
 - `study-metadata.json` (from Step 1) pre-fills the study fields — the *Create Study* page gets a button to upload it.
 - Creating a study in Canopy needs the **Data Submitter** role, which isn't granted by default — request it from a Canopy administrator ahead of time. During registration you also set the study's access level (who can see it).
 
@@ -82,13 +82,13 @@ The **primary deliverable is knowledge, captured as artifacts you can reuse** �
 2. **A lessons-learned document** — what worked, what didn't, where models go wrong (and how to recover), and recommendations for doing this reliably and *generically* across different inputs and different LLMs.
 3. **The worked example** — the filled Canopy Study instance (Step 1) and the domain-specific template + instance (Steps 2–3), as CEDAR JSON-LD, produced from the bundled study, plus a registered study in Canopy.
 
-**Prerequisite — bring your own LLM.** You need access to an LLM with tool/MCP support (Claude, ChatGPT, Gemini, …); we don't provide a license. Because the MCP servers are an open standard, the same prompts and servers should work across clients — comparing them is a welcome bonus.
+**Prerequisite — bring your own LLM.** You need access to an LLM with tool/MCP support (Claude, ChatGPT, Gemini, …); we don't provide a license. Because the MCP servers are an open standard, the same prompts and servers should work across clients.
 
 Success looks like: **someone who isn't a CEDAR expert can follow your prompts and lessons-learned on their own data and end up with a registered, FAIR Canopy study.**
 
 ## The Example Study We Provide
 
-The bundled **synthetic study (SPbE-2026)** is just an *example input* so you can build and test immediately — your approach must generalize beyond it. Under [`data/synthetic-study/`](data/synthetic-study/):
+The bundled **synthetic study (SPbE-2026)** is just an *example input* — your approach must generalize beyond it. Under [`data/synthetic-study/`](data/synthetic-study/):
 
 - **`SPbE-2026_dataset.xlsx`** — 40 subjects × 20 columns, plus a `data_dictionary` sheet. The same data is also provided as **`SPbE-2026_dataset.csv`** (open format, no licensing concerns).
 - **`SPbE-2026_protocol.pdf`** — a ~10-page study protocol (rich free text to extract from).
@@ -118,7 +118,7 @@ These are AI-generated and entirely fictional — no real subjects or results.
 > 2. **📂 Work in the `work/` folder.** Keep everything you produce there.
 > 3. **⚙️ Install the tools and servers** — open the **👉 [setup guide](INSTALL.md)** and follow it.
 
-That's the whole picture: the tools are ready and the example is in your hands. Take the example study through the workflow and capture what worked — exactly as described above. That writeup is the deliverable.
+Take the example study through the workflow and capture what worked. That writeup is the deliverable.
 
 Don't chase a perfect pipeline. Chase a run you can **repeat and explain**: if someone else can take your prompts and go from raw files to a registered, FAIR study, you've nailed it.
 

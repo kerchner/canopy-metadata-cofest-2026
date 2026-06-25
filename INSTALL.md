@@ -70,11 +70,11 @@ configuration block for your client, with the file paths and your keys already f
 uv run scripts/download_mcps.py --cedar-key YOUR_CEDAR_KEY --bioportal-key YOUR_BIOPORTAL_KEY
 ```
 
-- Leave a key off and it'll simply ask you for it.
+- Leave a key off and it'll ask you for it.
 - Want the files somewhere other than `~/mcp`? Add `--dir /your/path`.
 - Don't use `uv`? `python3 scripts/download_mcps.py` works the same way.
 
-The configuration it produces is a small block of **JSON** — the standard way an LLM client is told
+The configuration it produces is a block of **JSON** — the standard way an LLM client is told
 which MCP servers exist and how to launch each one. The script writes it to
 `~/mcp/mcpServers.json` and also prints it to your screen; that's what you'll hand to your client
 in step 5.
