@@ -31,7 +31,7 @@ The point of the CoFest is **developing and understanding** how to drive metadat
 
 ## MCP Servers
 
-To work with CEDAR (and BioPortal) from an LLM, we use a set of **MCP servers** — you connect them to your LLM client and call them; there's no integration to build yourself. The four we use are listed below.
+To work with CEDAR and BioPortal from an LLM, we use a set of **MCP servers** — you connect them to your LLM client and call them. The four we use are listed below.
 
 > **What's an MCP?** The Model Context Protocol is an open standard — a universal adapter that lets an AI assistant call external tools and data sources in a uniform way. An MCP *server* exposes a specific capability (here, a slice of CEDAR or BioPortal) as a set of callable tools. Because it's a shared standard, the same servers work across MCP-capable clients — Claude, ChatGPT, and others — so you can bring whatever LLM you have a license for.
 
@@ -44,11 +44,15 @@ To work with CEDAR (and BioPortal) from an LLM, we use a set of **MCP servers** 
 
 ## Workflow
 
-The workflow is four steps: fill the Canopy Study template (Step 1), design a domain-specific template (Step 2), fill it (Step 3), and create the study in Canopy (Step 4). Steps 1–3 each produce a CEDAR artifact; Step 4 turns those into a live study.
+The workflow is four steps: fill the Canopy Study template (Step 1), design a domain-specific template (Step 2), fill it (Step 3), and create the study in Canopy (Step 4). Steps 1–3 each produce a CEDAR artifact; Step 4 turns those into a live study in Canopy.
 
 ![The four-step workflow: fill the Canopy Study template, design a domain template, fill the domain template, create the study in Canopy.](images/workflow.svg)
 
-**Input (Step 0):** the researcher's artifacts — datasets (XLSX/CSV, relational exports) and documents (papers, protocol, grant, SOP, supplementary PDFs). The bundled synthetic study is one example; the approach must work for any.
+### Step 0 — The Inputs
+
+In real life, the inputs are *your own* research artifacts — datasets (XLSX/CSV, relational exports) and documents (papers, protocol, grant, SOP, supplementary PDFs) — and the whole point is that the workflow reads them and describes *your* data. That's the case the approach has to handle, so it must work for any such files, not a fixed format.
+
+For this CoFest, though, you don't need to bring anything: we provide a pre-canned set of inputs — the bundled synthetic study (SPbE-2026) — so you can start immediately. It's one example dataset plus its protocol and an SOP, standing in for a real researcher's files. Use it to build and test the workflow end-to-end; if it works there and generalizes, you've nailed it. See [The Example Study We Provide](#the-example-study-we-provide) for what's in it.
 
 ### Step 1 — Fill Out the Existing Canopy Study Template
 *What:* produce a filled **Canopy Study** instance from the artifacts. *Why:* every Canopy submission is built around a study, and Canopy provides a single generic study-metadata template (title, investigators, design, dates, …) that every study must populate. Filling it is the unavoidable first step, and an LLM can draft most of it by reading the protocol and dataset rather than the researcher typing it by hand. This instance also **bootstraps the study in Step 4**, so it's worth getting right first.
@@ -78,7 +82,7 @@ The workflow is four steps: fill the Canopy Study template (Step 1), design a do
 
 The **primary deliverable is knowledge, captured as artifacts you can reuse** — not finished software. Concretely, by the end of the two days we want:
 
-1. **A curated set of prompts** that drive [Steps 1–4](#workflow) with an LLM — the prompts themselves, the order to run them, what context to feed in, and the guardrails that keep the model on track.
+1. **A curated set of prompts** that drive Steps 1–4 with an LLM — the prompts themselves, the order to run them, what context to feed in, and the guardrails that keep the model on track.
 2. **A lessons-learned document** — what worked, what didn't, where models go wrong (and how to recover), and recommendations for doing this reliably and *generically* across different inputs and different LLMs.
 3. **The worked example** — the filled Canopy Study instance (Step 1) and the domain-specific template + instance (Steps 2–3), as CEDAR JSON-LD, produced from the bundled study, plus a registered study in Canopy.
 
@@ -88,7 +92,7 @@ Success looks like: **someone who isn't a CEDAR expert can follow your prompts a
 
 ## The Example Study We Provide
 
-The bundled **synthetic study (SPbE-2026)** is just an *example input* — your approach must generalize beyond it. Under [`data/synthetic-study/`](data/synthetic-study/):
+The bundled **synthetic study (SPbE-2026)** is just an *example input* — your approach must generalize beyond it. Under `data/synthetic-study/`:
 
 - **`SPbE-2026_dataset.xlsx`** — 40 subjects × 20 columns, plus a `data_dictionary` sheet. The same data is also provided as **`SPbE-2026_dataset.csv`** (open format, no licensing concerns).
 - **`SPbE-2026_protocol.pdf`** — a ~10-page study protocol (rich free text to extract from).
