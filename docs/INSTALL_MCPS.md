@@ -1,6 +1,6 @@
 # MCP servers — install
 
-> One-time setup. Gets the four CEDAR MCP servers running with your LLM client so you can drive the [workflow](../README.md#workflow). For *what* the servers are and *why*, see the [main README](../README.md#mcp-servers-the-foundation); for running the workflow once they're installed, see the [RUNBOOK](RUNBOOK.md).
+> One-time setup. Gets the four CEDAR MCP servers running with your LLM client so you can drive the [workflow](../README.md#workflow). For *what* the servers are and *why*, see the [main README](../README.md#mcp-servers).
 
 Four small MCP servers let your AI assistant work with metadata templates end to end —
 authoring them, looking up ontology terms, filling them out as forms in your browser, and saving
