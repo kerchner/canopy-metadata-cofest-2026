@@ -66,7 +66,7 @@ For this CoFest, though, you don't need to bring anything: we provide a pre-cann
 - Fill a valid instance from the PDFs/datasets with **`cedar-artifact-mcp`**.
 
 ### Step 2 — Create a Domain-Specific Template
-**What:** design a new CEDAR template that captures the metadata specific to *this* study's data — a flat, ~20-field template that constrains key fields to controlled terms (e.g. condition → MONDO, country → GAZ, sex → NCIT) and external identifiers (ORCID, PubMed ID, DOI), using proper types (numeric, date, boolean) rather than all strings, mirroring the [example dataset's columns](#the-example-study-we-provide). Designing this *is the task* — there's no template to copy.
+**What:** design a new CEDAR template that captures the metadata specific to *this* study's data — a flat, ~20-field template that constrains key fields to controlled terms (e.g. condition → MONDO, country → GAZ, sex → NCIT) and external identifiers (ORCID, PubMed ID, DOI), using proper types (numeric, date, boolean) rather than all strings, mirroring the example dataset's columns. Designing this *is the task* — there's no template to copy.
 
 **Why:** the generic Study template describes the study, but not the particulars of the dataset — its condition, assays, organism, units, identifiers. A domain-specific template captures those, and crucially it constrains key fields to **controlled terms** so values are interoperable. A *controlled term* is a value drawn from an agreed vocabulary (an ontology) instead of free text — so "prediabetes" resolves to one canonical concept rather than a dozen spellings. **BioPortal** is the repository of biomedical ontologies those terms come from; the `bioportal-term-mcp` server looks them up. Controlled terms are what make a dataset findable and comparable across studies.
 - Author the template with **`cedar-artifact-mcp`**; resolve controlled terms with **`bioportal-term-mcp`**.
@@ -77,7 +77,7 @@ For this CoFest, though, you don't need to bring anything: we provide a pre-cann
 
 **Why:** a template is just the empty form — the actual descriptive metadata only exists once it's filled in and conforms to the template (right field types, allowed values, required fields present). A *valid* instance is one CEDAR accepts as conforming; validity is what lets Canopy trust and publish the metadata downstream.
 - Pull the Step 2 template back from CEDAR.
-- Infer values from the artifacts and build the instance with **`cedar-artifact-mcp`**; upload it to CEDAR.
+- Infer values from the study data and build the instance with **`cedar-artifact-mcp`**; upload it to CEDAR.
 
 ### Step 4 — Create the Study in Canopy
 **What:** register a new study in Canopy, **bootstrapping it from the Step 1 Study instance**, and attach the files.
