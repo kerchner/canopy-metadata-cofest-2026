@@ -88,13 +88,11 @@ For this CoFest, though, you don't need to bring anything: we provide a pre-cann
 
 ## The Deliverable
 
-The **primary deliverable is knowledge, captured as artifacts you can reuse** — not finished software. Concretely, by the end of the two days we want:
+The **primary deliverable is knowledge, captured as reusable materials** — not finished software. Concretely, by the end of the two days we want:
 
 1. **A curated set of prompts** that drive Steps 1–4 with an LLM — the prompts themselves, the order to run them, what context to feed in, and the guardrails that keep the model on track.
 2. **A lessons-learned document** — what worked, what didn't, where models go wrong (and how to recover), and recommendations for doing this reliably and *generically* across different inputs and different LLMs.
 3. **The worked example** — the filled Canopy Study instance (Step 1) and the domain-specific template + instance (Steps 2–3), as CEDAR JSON-LD, produced from the bundled study, plus a registered study in Canopy.
-
-**Prerequisite — bring your own LLM.** You need access to an LLM with tool/MCP support (Claude, ChatGPT, Gemini, …); we don't provide a license. Because the MCP servers are an open standard, the same prompts and servers should work across clients.
 
 Success looks like: **someone who isn't a CEDAR expert can follow your prompts and lessons-learned on their own data and end up with a registered, FAIR Canopy study.**
 
