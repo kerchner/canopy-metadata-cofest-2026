@@ -1,22 +1,5 @@
 # Setup
 
-> One-time setup. Fork and clone the project, install the prerequisites, and get the four CEDAR MCP servers running with your LLM client so you can drive the [workflow](README.md#workflow). For *what* the servers are and *why*, see the [main README](README.md#mcp-servers).
-
-Follow the steps top to bottom — each has copy-paste commands. Nothing to build or compile: you fork the repo, run one script, and paste what it gives your LLM client.
-
-The four MCP servers you'll end up with:
-
-| Server | What it does | Stack |
-|---|---|---|
-| [cedar-artifact-mcp](https://github.com/metadatacenter/cedar-artifact-mcp) | Author & validate templates, elements, fields, and instances; convert YAML ↔ JSON | Java |
-| [bioportal-term-mcp](https://github.com/metadatacenter/bioportal-term-mcp) | Look up ontologies, classes, and value sets in BioPortal (real IRIs, not guesses) | Python |
-| [cedar-cee-mcp](https://github.com/metadatacenter/cedar-cee-mcp) | Render templates and instances as real forms in your browser, and collect what's filled in | Java |
-| [cedar-artifact-rest-mcp](https://github.com/metadatacenter/cedar-artifact-rest-mcp) | Save, fetch, and validate artifacts on a live CEDAR server | Java |
-
-Works with any MCP-capable client — tested with **Claude Desktop, Claude Code, Cursor, Windsurf, and
-Cline**. (VS Code's built-in MCP support uses a different configuration format and isn't covered
-here.) You bring the LLM license; we don't provide one.
-
 ## 1. Fork the repo and clone your fork
 
 Fork it so you have your own copy to commit your work to, then clone that fork to your machine.

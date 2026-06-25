@@ -111,7 +111,7 @@ These are AI-generated and entirely fictional — no real subjects or results.
 ## Get Going
 
 > 1. **🍴 Fork this repo, then clone your fork** to your machine.
-> 2. **📂 Work in the [`work/`](work/) folder.** Keep everything you produce there.
+> 2. **📂 Work in the `work/` folder.** Keep everything you produce there.
 > 3. **⚙️ Install the tools and servers** — open the **👉 [setup guide](INSTALL.md)** and follow it.
 
 That's the whole picture: the tools are ready and the example is in your hands. Take the example study through the workflow and capture what worked — exactly as described above. That writeup is the deliverable.
