@@ -22,7 +22,7 @@ Today, describing a dataset for one of these hubs is largely **manual**: a perso
 
 The point of the CoFest is **developing and understanding** how to drive metadata description with AI — not shipping a finished product. So the tangible output is **prompts, strategies, and a lessons-learned document**, not (necessarily) software. The [bundled synthetic study](data/synthetic-study) is only an example input; whatever you develop should generalize to *any* researcher's datasets and documents.
 
-1. **Drive the 4-step workflow with an LLM of your choice** — fill the Canopy Study template, design a domain-specific template, fill it, and create the study in Canopy — using the CEDAR MCP servers.
+1. **Drive the 4-step workflow with an LLM of your choice** — fill [the Canopy Study template]([url](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)), design a domain-specific template, fill it, and create the study in Canopy — using the CEDAR MCP servers.
 2. **Capture the prompts and strategies that worked** — the prompts, the order of operations, what to feed the model, where it goes wrong, and how to recover. This is the primary deliverable.
 3. **Write up lessons learned** — a short document distilling what works, what doesn't, and recommendations for doing this reliably and generically.
 4. **Prove it on the example.** Run your approach against the [bundled synthetic study](data/synthetic-study), end-to-end.
@@ -44,7 +44,7 @@ To work with CEDAR and BioPortal from an LLM, we use a set of **MCP servers** �
 
 ## Workflow
 
-The workflow is four steps: fill the Canopy Study template (Step 1), design a domain-specific template (Step 2), fill it (Step 3), and create the study in Canopy (Step 4). Steps 1–3 each produce a CEDAR artifact; Step 4 turns those into a live study in Canopy.
+The workflow is four steps: fill [the Canopy Study template]([url](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)) (Step 1), design a domain-specific template (Step 2), fill it (Step 3), and create the study in Canopy (Step 4). Steps 1–3 each produce a CEDAR artifact; Step 4 turns those into a live study in Canopy.
 
 ![The four-step workflow: fill the Canopy Study template, design a domain template, fill the domain template, create the study in Canopy.](images/workflow.svg)
 
@@ -58,7 +58,7 @@ For this CoFest, though, you don't need to bring anything: we provide a pre-cann
 **What:** produce a filled **Canopy Study** instance from the artifacts.
 
 **Why:** every Canopy submission is built around a study, and Canopy provides a single generic study-metadata template (title, investigators, design, dates, …) that every study must populate. Filling it is the unavoidable first step, and an LLM can draft most of it by reading the protocol and dataset rather than the researcher typing it by hand. This instance also **bootstraps the study in Step 4**, so it's worth getting right first.
-- The Canopy Study template is an existing CEDAR template — in an LLM session pull it live from CEDAR with **`cedar-artifact-rest-mcp`** using its template id:
+- [The Canopy Study template]([url](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)) is an existing CEDAR template — in an LLM session pull it live from CEDAR with **`cedar-artifact-rest-mcp`** using its template id:
 
   ```
   https://repo.metadatacenter.org/templates/aff00b59-0bb7-4e40-9437-3216e5fb0ff7
