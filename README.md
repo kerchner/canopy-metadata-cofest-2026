@@ -4,9 +4,13 @@
 
 This project is part of **[Canopy](https://github.com/canopy-datahub)**, an open-source platform for building FAIR-aligned scientific data hubs that support data sharing, harmonization, discovery, and reuse across research studies.
 
-In Canopy, researchers organize and share data as studies, each consisting of one or more datasets together with structured metadata describing the study, its datasets, and related resources. This metadata is authored using **[CEDAR](https://cedar.metadatacenter.org/)**, an open-source platform for designing and managing machine-readable metadata templates.
+In Canopy, researchers organize and share data as studies, each consisting of one or more datasets together with structured metadata describing the study, its datasets, and related resources.
+This metadata is authored using **[CEDAR](https://metadatacenter.org/)**, an open-source platform for designing and managing machine-readable metadata templates.
 
-Creating high-quality metadata is still largely manual. Researchers often extract information from datasets, data dictionaries, protocols, and publications, then translate it into structured metadata. This project explores AI-assisted approaches for automating parts of that process while maintaining high-quality metadata that can be used in Canopy. As a bonus part, we will also explore how this metadata can be used to populate and register studies in Canopy.
+Creating high-quality metadata is still largely manual.
+Researchers often extract information from datasets, data dictionaries, protocols, and publications, then translate it into structured metadata.
+This project explores AI-assisted approaches for automating parts of that process while maintaining high-quality metadata that can be used in Canopy.
+As a bonus part, we will also explore how this metadata can be used to populate and register studies in Canopy.
 
 ## Project Goals
 
@@ -25,7 +29,7 @@ Before diving into the project, we'll first set up the development environment a
 
 ## Environment Setup
 
-Before jumping into the tutorial and project, please complete the environment setup by following the instructions on [this page](https://github.com/canopy-datahub/canopy-metadata-cofest-2026/blob/main/INSTALL.md). Once everything is set up, come back here to continue.
+Before jumping into the tutorial and project, please complete the environment setup by following the instructions on [this page](./INSTALL.md). Once everything is set up, come back here to continue.
 
 ## Tutorial
 
@@ -39,10 +43,10 @@ To complete the tutorial, you'll use the **MCP (Model Context Protocol) servers*
 
 | MCP server | Purpose |
 |------------|---------|
-| [`cedar-artifact-mcp`](...) | Create and validate CEDAR templates and metadata instances. |
-| [`bioportal-term-mcp`](...) | Search BioPortal for ontology terms and controlled vocabulary values. |
-| [`cedar-artifact-rest-mcp`](...) | Upload, retrieve, and manage templates and instances on a CEDAR server. |
-| [`cedar-cee-mcp`](...) | Visualize templates and instances as interactive forms using the CEDAR Embeddable Editor. |
+| [`cedar‑artifact‑mcp`](...) | Create and validate CEDAR templates and metadata instances. |
+| [`bioportal‑term‑mcp`](...) | Search BioPortal for ontology terms and controlled vocabulary values. |
+| [`cedar‑artifact‑rest‑mcp`](...) | Upload, retrieve, and manage templates and instances on a CEDAR server. |
+| [`cedar‑cee‑mcp`](...) | Visualize templates and instances as interactive forms using the CEDAR Embeddable Editor. |
 
 
 ### Task
@@ -69,9 +73,9 @@ To provide a common starting point, we include a [synthetic study](data/syntheti
 
 Canopy provides a generic **Canopy Study Template** that captures the study-level metadata required for every submission. Start by retrieving this existing template from CEDAR using `cedar-artifact-rest-mcp` using the template ID provided, then generate a completed metadata instance from the provided study materials.
 
-**Template:** [Canopy Study Template](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)
+**Template:** [Canopy Study Template in CEDAR](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)
 
-**Template ID**
+**Template ID**:
 ```text
 https://repo.metadatacenter.org/templates/aff00b59-0bb7-4e40-9437-3216e5fb0ff7
 ```
@@ -82,9 +86,9 @@ Create a new CEDAR template describing the metadata specific to the provided dat
 
 ### Project Task 3 — Populate your domain-specific template
 
-Populate the template created in Step 2 using information extracted from the provided datasets and documents.
+Populate the template created in Task 2 using information extracted from the provided datasets and documents.
 
-### Optional Task 4 — Register the s tudy in Canopy
+### Optional Task 4 — Register the study in Canopy
 
 Use the generated metadata to populate a study in Canopy. This demonstrates how AI-generated metadata can support the complete submission workflow.
 
@@ -114,6 +118,7 @@ Examples of useful deliverables include:
 | Martin O'Connor | Workflow & pipeline design | Stanford University |
 | Marcos Martínez Romero | Canopy / project concept | Stanford University |
 | Matthew Horridge | Canopy / senior advisor | Stanford University |
+| Mete Akdogan | Canopy / senior advisor | Stanford University |
 
 ## Links
 
