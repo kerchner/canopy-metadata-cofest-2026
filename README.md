@@ -2,137 +2,114 @@
 
 ### CollaborationFest 2026 Project - [CoFest 2026](https://www.open-bio.org/events/bosc-2026/collaborationfest/)
 
-A CollaborationFest 2026 project on **describing research data with AI**. Using an LLM together with our CEDAR tools, you turn ordinary research files — spreadsheets, protocols, papers — into standards-compliant metadata and a registered Canopy study.
+This project is part of **[Canopy](https://github.com/canopy-datahub)**, an open-source platform for building FAIR-aligned scientific data hubs that support data sharing, harmonization, discovery, and reuse across research studies.
 
----
+Researchers must describe their studies with structured metadata before data can be shared and discovered. In Canopy, this metadata is created using **[CEDAR](https://cedar.metadatacenter.org/)**, an open-source platform for designing and managing machine-readable metadata templates, which define what information to capture and enforce standardized metadata.
 
-## Background
+Canopy organizes data around **studies**. Each study consists of one or more data files together with structured metadata describing the study, its datasets, and related resources. This metadata is captured using reusable CEDAR templates, making studies easier to discover, understand, and reuse.
 
-Research data is only as reusable as it is well described. For a dataset to be shared, found, and reused by others, it has to be documented with **structured metadata** — what the study was, who ran it, what was measured, in what units, using which standard terms. Producing that metadata by hand is slow, tedious, and error-prone — the "blank page" problem — and it is one of the biggest reasons otherwise valuable datasets never get described well enough to be discovered and reused. Lowering that barrier is central to making data FAIR: findable, accessible, interoperable, and reusable.
+Creating this metadata is still largely a manual process. Researchers often work from spreadsheets, data dictionaries, protocols, and publications, then spend considerable time translating that information into structured metadata.
 
-This work sits on top of two established open systems. **[Canopy](https://github.com/canopy-datahub)** is generalist **repository infrastructure**: a researcher registers a *study* and submits both its **data files** and the **metadata** describing them, and Canopy makes the result findable and downloadable according to an access policy (it is derived from the [NIH RADx Data Hub](https://radxdatahub.nih.gov/)). Every submission is organized around a study, and Canopy ships with a **generic study-metadata template** that every study fills in — the "Canopy Study template" referenced throughout this document.
+This project explores AI-assisted approaches for generating structured metadata directly from research artifacts, reducing manual effort. As part of the project, we will also explore how this metadata can be used to populate and register studies in Canopy.
 
-**[CEDAR](https://cedar.metadatacenter.org/)** (the Center for Expanded Data Annotation and Retrieval) is the metadata standard those templates follow. A **template** is a reusable blueprint defining *what* metadata to capture — its fields, their types, and which values are allowed (for example, a "country" field must come from a controlled list, or a date must be a real date). An **instance** is a single record *filled in* against a template. A template is the empty form; an instance is the completed one.
+## Project Goals?
 
-Today, describing a dataset for one of these hubs is largely **manual**: a person designs or picks the template, then fills in valid instances field by field. That hand-work is the friction — and the reason so much data stays poorly described.
+## Environment Setup
 
-**The overall goal of this project is an AI-assisted workflow that does this for you** — reading a researcher's ordinary files (spreadsheets, data dictionaries, protocols, papers) and producing the standards-compliant metadata and the registered study that otherwise have to be built by hand.
+Before jumping into the tutorial and project, please complete the environment setup by following the instructions on [this page](https://github.com/canopy-datahub/canopy-metadata-cofest-2026/blob/main/INSTALL.md). Once everything is set up, come back here to continue.
 
-## Goals
+## Tutorial
 
-The point of the CoFest is **developing and understanding** how to drive metadata description with AI — not shipping a finished product. So the tangible output is **prompts, strategies, and a lessons-learned document**, not (necessarily) software. The [bundled synthetic study](data/synthetic-study) is only an example input; whatever you develop should generalize to *any* researcher's datasets and documents.
+Before starting the project, complete this short tutorial to verify that your environment is working correctly and to become familiar with the core concepts.
 
-1. **Drive the 4-step workflow with an LLM of your choice** — fill [the Canopy Study template](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7), design a domain-specific template, fill it, and create the study in Canopy — using the CEDAR MCP servers.
-2. **Capture the prompts and strategies that worked** — the prompts, the order of operations, what to feed the model, where it goes wrong, and how to recover. This is the primary deliverable.
-3. **Write up lessons learned** — a short document distilling what works, what doesn't, and recommendations for doing this reliably and generically.
-4. **Prove it on the example.** Run your approach against the [bundled synthetic study](data/synthetic-study), end-to-end.
+In this tutorial, you'll learn the basics of creating metadata with **CEDAR**, the metadata platform used by Canopy. A **CEDAR template** defines the metadata fields to be captured (for example, title, authors, or publication date), while an **instance** is a completed metadata record created from that template.
 
----
+To interact with CEDAR and BioPortal, you'll use several **MCP (Model Context Protocol) servers**, which allow your LLM to create, validate, visualize, and store metadata through external tools.
 
-## MCP Servers
+### MCP Servers
 
-To work with CEDAR and BioPortal from an LLM, we use a set of **MCP servers** — you connect them to your LLM client and call them. The four we use are listed below.
+| MCP server | Purpose |
+|------------|---------|
+| [`cedar-artifact-mcp`](...) | Create and validate CEDAR templates and metadata instances. |
+| [`bioportal-term-mcp`](...) | Search BioPortal for ontology terms and controlled vocabulary values. |
+| [`cedar-artifact-rest-mcp`](...) | Upload, retrieve, and manage templates and instances on a CEDAR server. |
+| [`cedar-cee-mcp`](...) | Visualize templates and instances as interactive forms using the CEDAR Embeddable Editor. |
 
-> **What's an MCP?** The Model Context Protocol is an open standard — a universal adapter that lets an AI assistant call external tools and data sources in a uniform way. An MCP *server* exposes a specific capability (here, a slice of CEDAR or BioPortal) as a set of callable tools. Because it's a shared standard, the same servers work across MCP-capable clients — Claude, ChatGPT, and others — so you can bring whatever LLM you have a license for.
 
-| MCP server                                                                             | What it does                                                                                                                    |
-|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| [`cedar‑artifact‑mcp`](https://github.com/metadatacenter/cedar-artifact-mcp)           | Author and validate CEDAR templates and metadata instances **in memory** — build templates/fields/elements, fill instances, convert between YAML and CEDAR JSON. |
-| [`bioportal‑term‑mcp`](https://github.com/metadatacenter/bioportal-term-mcp)           | Look up ontology terms in BioPortal so values are anchored to real, standard identifiers (IRIs) instead of guessed free text. |
-| [`cedar‑artifact‑rest‑mcp`](https://github.com/metadatacenter/cedar-artifact-rest-mcp) | The I/O counterpart to `cedar-artifact-mcp`: **persist and fetch** artifacts on a live CEDAR server (create / get / update / delete / server-side validate). |
-| [`cedar‑cee‑mcp`](https://github.com/metadatacenter/cedar-cee-mcp)                     | **Show a template or instance as a form** in the browser — read-only to review, or editable so a person fills it in (via the CEDAR Embeddable Editor), with the result flowing back. |
+### Task
 
-## Workflow
+Create a simple **publication metadata template** using the MCPs you just configured. Your template should include:
 
-The workflow is four steps: fill [the Canopy Study template](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7) (Step 1), design a domain-specific template (Step 2), fill it (Step 3), and create the study in Canopy (Step 4). Steps 1–3 each produce a CEDAR artifact; Step 4 turns those into a live study in Canopy.
+- Title
+- Authors (including their ORCID identifiers)
+- Publication date
+- Publication type (use a controlled vocabulary linked to the [SIO "publication" term](https://bioportal.bioontology.org/ontologies/SIO?p=classes&conceptid=http%3A%2F%2Fsemanticscience.org%2Fresource%2FSIO_000087) in BioPortal)
+- Keywords
 
-![The four-step workflow: fill the Canopy Study template, design a domain template, fill the domain template, create the study in Canopy.](images/workflow.svg)
+Once your template is complete:
 
-### Step 0 — The Inputs
+1. Find a journal article and use an LLM to generate a metadata instance for your template.
+2. Open the generated instance using **CEE-MCP** to verify that it renders correctly.
+3. Use the appropriate MCPs to upload both the template and the instance to CEDAR.
 
-In real life, the inputs are *your own* research artifacts — datasets (XLSX/CSV, relational exports) and documents (papers, protocol, grant, SOP, supplementary PDFs) — and the whole point is that the workflow reads them and describes *your* data. That's the case the approach has to handle, so it must work for any such files, not a fixed format.
+## Project Goals
 
-For this CoFest, though, you don't need to bring anything: we provide a pre-canned set of inputs — [the bundled synthetic study (SPbE-2026)](data/synthetic-study) — so you can start immediately. It's one example dataset plus its protocol and an SOP, standing in for a real researcher's files. Use it to build and test the workflow end-to-end.
+The goal of this CoFest project is to explore reusable AI-assisted workflows for metadata generation.
 
-### Step 1 — Fill Out the Existing Canopy Study Template
-**What:** produce a filled **Canopy Study** instance from the artifacts.
+Rather than building a single solution for one dataset, we encourage participants to experiment with prompting strategies, pipelines, and agentic workflows that can generalize across different studies and research domains.
 
-**Why:** every Canopy submission is built around a study, and Canopy provides a single generic study-metadata template (title, investigators, design, dates, …) that every study must populate. Filling it is the unavoidable first step, and an LLM can draft most of it by reading the protocol and dataset rather than the researcher typing it by hand. This instance also **bootstraps the study in Step 4**, so it's worth getting right first.
-- [The Canopy Study template](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7) is an existing CEDAR template — in an LLM session pull it live from CEDAR with **`cedar-artifact-rest-mcp`** using its template id:
+Possible directions include:
 
-  ```
-  https://repo.metadatacenter.org/templates/aff00b59-0bb7-4e40-9437-3216e5fb0ff7
-  ```
-- Fill a valid instance from the PDFs/datasets with **`cedar-artifact-mcp`**.
+- Designing reusable prompting strategies for metadata generation.
+- Building multi-step AI workflows or agentic pipelines.
+- Evaluating different LLMs, tools, and prompting techniques.
+- Exploring how generated metadata can be integrated into Canopy.
 
-### Step 2 — Create a Domain-Specific Template
-**What:** design a new CEDAR template that captures the metadata specific to *this* study's data — a flat, ~20-field template that constrains key fields to controlled terms (e.g. condition → MONDO, country → GAZ, sex → NCIT) and external identifiers (ORCID, PubMed ID, DOI), using proper types (numeric, date, boolean) rather than all strings, mirroring the example dataset's columns. Designing this *is the task* — there's no template to copy.
+## Example Workflow
 
-**Why:** the generic Study template describes the study, but not the particulars of the dataset — its condition, assays, organism, units, identifiers. A domain-specific template captures those, and crucially it constrains key fields to **controlled terms** so values are interoperable. A *controlled term* is a value drawn from an agreed vocabulary (an ontology) instead of free text — so "prediabetes" resolves to one canonical concept rather than a dozen spellings. **BioPortal** is the repository of biomedical ontologies those terms come from; the `bioportal-term-mcp` server looks them up. Controlled terms are what make a dataset findable and comparable across studies.
-- Author the template with **`cedar-artifact-mcp`**; resolve controlled terms with **`bioportal-term-mcp`**.
-- Upload it to CEDAR with **`cedar-artifact-rest-mcp`**; view/verify with **`cedar-cee-mcp`** or the CEDAR UI.
+To provide a common starting point, we include a [synthetic study](data/synthetic-study) that can be used to evaluate an end-to-end AI-assisted metadata generation workflow. This workflow is only an example—you are encouraged to adapt, extend, or replace it with your own reusable approach.
 
-### Step 3 — Fill the Domain-Specific Template
-**What:** create a **valid instance** of the Step 2 template.
+### Step 1 — Generate a Canopy Study Metadata Instance
 
-**Why:** a template is just the empty form — the actual descriptive metadata only exists once it's filled in and conforms to the template (right field types, allowed values, required fields present). A *valid* instance is one CEDAR accepts as conforming; validity is what lets Canopy trust and publish the metadata downstream.
-- Pull the Step 2 template back from CEDAR.
-- Infer values from the study data and build the instance with **`cedar-artifact-mcp`**; upload it to CEDAR.
+Canopy provides a generic **Canopy Study Template** that captures the study-level metadata required for every submission. Start by retrieving this existing template from CEDAR using `cedar-artifact-rest-mcp` using the template ID provided, then generate a completed metadata instance from the provided study materials.
 
-### Step 4 — Create the Study in Canopy
-**What:** register a new study in Canopy, **bootstrapping it from the Step 1 Study instance**, and attach the files.
+**Template:** [Canopy Study Template](https://openview.metadatacenter.org/templates/https:%2F%2Frepo.metadatacenter.org%2Ftemplates%2Faff00b59-0bb7-4e40-9437-3216e5fb0ff7)
 
-**Why:** this is where description becomes a real, shareable record. Instead of re-keying everything into the Canopy *Create Study* form, the Step 1 metadata pre-fills it.
-- `study-metadata.json` (from Step 1) pre-fills the study fields — the *Create Study* page gets a button to upload it.
-- Creating a study in Canopy needs the **Data Submitter** role, which isn't granted by default — request it from a Canopy administrator ahead of time. During registration you also set the study's access level (who can see it).
+**Template ID**
+```text
+https://repo.metadatacenter.org/templates/aff00b59-0bb7-4e40-9437-3216e5fb0ff7
+```
 
-## The Deliverable
+### Step 2 — Design a Domain-Specific Metadata Template
 
-The **primary deliverable is knowledge, captured as reusable materials** — not finished software. Concretely, by the end of the two days we want:
+Create a new CEDAR template describing the metadata specific to the provided dataset. Choose appropriate field types and, where appropriate, controlled vocabulary terms from BioPortal.
 
-1. **A curated set of prompts** that drive Steps 1–4 with an LLM — the prompts themselves, the order to run them, what context to feed in, and the guardrails that keep the model on track.
-2. **A lessons-learned document** — what worked, what didn't, where models go wrong (and how to recover), and recommendations for doing this reliably and *generically* across different inputs and different LLMs.
-3. **The worked example** — the filled Canopy Study instance (Step 1) and the domain-specific template + instance (Steps 2–3), as CEDAR JSON-LD, produced from the bundled study, plus a registered study in Canopy.
+### Step 3 — Generate a Metadata Instance
 
-Success looks like: **someone who isn't a CEDAR expert can follow your prompts and lessons-learned on their own data and end up with a registered, FAIR Canopy study.**
+Populate the template created in Step 2 using information extracted from the provided datasets and documents.
 
-## The Example Study We Provide
 
-The bundled **synthetic study (SPbE-2026)** is just an *example input* — your approach must generalize beyond it. Under `data/synthetic-study/`:
+### Step 4 — Register the Study in Canopy *(Optional)*
 
-- **`SPbE-2026_dataset.xlsx`** — 40 subjects × 20 columns, plus a `data_dictionary` sheet. The same data is also provided as **`SPbE-2026_dataset.csv`** (open format, no licensing concerns).
-- **`SPbE-2026_protocol.pdf`** — a ~10-page study protocol (rich free text to extract from).
-- **`SPbE-2026_SOP_sample-collection.pdf`** — a supplementary SOP.
+Use the generated metadata to populate a study in Canopy. This demonstrates how AI-generated metadata can support the complete submission workflow.
 
-The dataset columns deliberately span varied CEDAR field types — numeric, date, boolean, ontology-controlled, and external-identifier — so the example exercises real metadata, not 20 strings:
+## Deliverables
 
-| Column | Type | Controlled by / authority |
-|---|---|---|
-| `subject_id` | string | — |
-| `enrollment_date`, `visit_date` | date | ISO-8601 |
-| `age_years`, `bmi_kg_m2`, `baseline_glucose_mg_dl`, `week12_glucose_mg_dl`, `hba1c_pct`, `systolic_bp_mmhg`, `adherence_pct` | numeric | — |
-| `sex` | controlled | NCIT |
-| `country` | controlled | GAZ / ISO-3166 |
-| `condition` | controlled | MONDO |
-| `study_arm` | controlled | NCIT (study arm) |
-| `on_glucose_medication`, `adverse_event`, `completed_study` | boolean | — |
-| `investigator_orcid` | identifier | ORCID |
-| `reference_pmid` | identifier | PubMed ID |
-| `protocol_doi` | identifier | DOI |
+The primary outcome of this project is reusable knowledge that others can build upon.
 
-These are AI-generated and entirely fictional — no real subjects or results.
+Examples of useful deliverables include:
+
+- Reusable prompts for metadata generation.
+- AI workflows or pipelines that can be applied to multiple studies.
+- Agentic workflows combining MCP servers and LLMs.
+- Lessons learned, best practices, and common pitfalls.
+- (Optional) A study registered in Canopy using the generated metadata.
 
 ## Get Going
 
 > 1. **🍴 Fork this repo, then clone your fork** to your machine.
 > 2. **📂 Work in the `work/` folder.** Keep everything you produce there.
 > 3. **⚙️ Install the tools and servers** — open the **👉 [setup guide](INSTALL.md)** and follow it.
-
-Take the example study through the workflow and capture what worked. That writeup is the deliverable.
-
-Don't chase a perfect pipeline. Chase a run you can **repeat and explain**: if someone else can take your prompts and go from raw files to a registered, FAIR study, you've nailed it.
-
-Got it working with time to spare? Point it at **your own data** and see how far it generalizes.
 
 ## Team
 
