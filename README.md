@@ -1,32 +1,44 @@
 # Canopy: AI-Assisted Metadata Generation
 
+
+# Canopy: AI-Assisted Metadata Generation
+
 ### CollaborationFest 2026 Project - [CoFest 2026](https://www.open-bio.org/events/bosc-2026/collaborationfest/)
 
 This project is part of **[Canopy](https://github.com/canopy-datahub)**, an open-source platform for building FAIR-aligned scientific data hubs that support data sharing, harmonization, discovery, and reuse across research studies.
 
-Researchers must describe their studies with structured metadata before data can be shared and discovered. In Canopy, this metadata is created using **[CEDAR](https://cedar.metadatacenter.org/)**, an open-source platform for designing and managing machine-readable metadata templates, which define what information to capture and enforce standardized metadata.
+In Canopy, researchers organize and share data as **studies**, each consisting of one or more datasets together with structured metadata describing the study, its datasets, and related resources. This metadata is authored using **[CEDAR](https://cedar.metadatacenter.org/)**, an open-source platform for designing and managing machine-readable metadata templates.
 
-Canopy organizes data around **studies**. Each study consists of one or more data files together with structured metadata describing the study, its datasets, and related resources. This metadata is captured using reusable CEDAR templates, making studies easier to discover, understand, and reuse.
+Creating high-quality metadata is still largely a manual process. Researchers often extract information from datasets, data dictionaries, protocols, and publications, then translate it into structured metadata. This project explores AI-assisted approaches for automating parts of that process while maintaining high-quality metadata that can be used in Canopy. As a bonus part, we will also explore how this metadata can be used to populate and register studies in Canopy.
 
-Creating this metadata is still largely a manual process. Researchers often work from spreadsheets, data dictionaries, protocols, and publications, then spend considerable time translating that information into structured metadata.
+### Project Goals
 
-This project explores AI-assisted approaches for generating structured metadata directly from research artifacts, reducing manual effort. As part of the project, we will also explore how this metadata can be used to populate and register studies in Canopy.
+The goal of this CoFest project is to explore reusable AI-assisted workflows for metadata generation.
 
-## Project Goals?
+Rather than building a workflow tailored to a single dataset, we encourage participants to experiment with prompting strategies, pipelines, and agentic workflows that can be reused across different studies and research domains.
 
-## Environment Setup
+Possible directions include:
+
+- Designing reusable prompting strategies for metadata generation.
+- Building multi-step AI workflows or agentic pipelines.
+- Evaluating different LLMs, tools, and prompting techniques.
+- Exploring how generated metadata can be integrated into Canopy.
+
+Before diving into the project, we'll first set up the development environment and complete a short tutorial covering the core concepts used throughout the rest of the project.
+
+### Environment Setup
 
 Before jumping into the tutorial and project, please complete the environment setup by following the instructions on [this page](https://github.com/canopy-datahub/canopy-metadata-cofest-2026/blob/main/INSTALL.md). Once everything is set up, come back here to continue.
 
-## Tutorial
+### Tutorial
 
 Before starting the project, complete this short tutorial to verify that your environment is working correctly and to become familiar with the core concepts.
 
 In this tutorial, you'll learn the basics of creating metadata with **CEDAR**, the metadata platform used by Canopy. A **CEDAR template** defines the metadata fields to be captured (for example, title, authors, or publication date), while an **instance** is a completed metadata record created from that template.
 
-To interact with CEDAR and BioPortal, you'll use several **MCP (Model Context Protocol) servers**, which allow your LLM to create, validate, visualize, and store metadata through external tools.
+To complete the tutorial, you'll use the **MCP (Model Context Protocol) servers** you just configured. These servers allow your LLM to interact with CEDAR and BioPortal to create, validate, visualize, and store metadata. The MCP servers used in this project are summarized below.
 
-### MCP Servers
+#### MCP Servers
 
 | MCP server | Purpose |
 |------------|---------|
@@ -52,24 +64,11 @@ Once your template is complete:
 2. Open the generated instance using **CEE-MCP** to verify that it renders correctly.
 3. Use the appropriate MCPs to upload both the template and the instance to CEDAR.
 
-## Project Goals
-
-The goal of this CoFest project is to explore reusable AI-assisted workflows for metadata generation.
-
-Rather than building a single solution for one dataset, we encourage participants to experiment with prompting strategies, pipelines, and agentic workflows that can generalize across different studies and research domains.
-
-Possible directions include:
-
-- Designing reusable prompting strategies for metadata generation.
-- Building multi-step AI workflows or agentic pipelines.
-- Evaluating different LLMs, tools, and prompting techniques.
-- Exploring how generated metadata can be integrated into Canopy.
-
-## Example Workflow
+## Project Tasks and Example Workflow
 
 To provide a common starting point, we include a [synthetic study](data/synthetic-study) that can be used to evaluate an end-to-end AI-assisted metadata generation workflow. This workflow is only an example—you are encouraged to adapt, extend, or replace it with your own reusable approach.
 
-### Step 1 — Generate a Canopy Study Metadata Instance
+### Project Task 1 — Generate a Canopy Study Metadata Instance
 
 Canopy provides a generic **Canopy Study Template** that captures the study-level metadata required for every submission. Start by retrieving this existing template from CEDAR using `cedar-artifact-rest-mcp` using the template ID provided, then generate a completed metadata instance from the provided study materials.
 
@@ -80,16 +79,15 @@ Canopy provides a generic **Canopy Study Template** that captures the study-leve
 https://repo.metadatacenter.org/templates/aff00b59-0bb7-4e40-9437-3216e5fb0ff7
 ```
 
-### Step 2 — Design a Domain-Specific Metadata Template
+### Project Task 2 — Design a Domain-Specific Metadata Template
 
 Create a new CEDAR template describing the metadata specific to the provided dataset. Choose appropriate field types and, where appropriate, controlled vocabulary terms from BioPortal.
 
-### Step 3 — Generate a Metadata Instance
+### Project 3 — Generate a Metadata Instance
 
 Populate the template created in Step 2 using information extracted from the provided datasets and documents.
 
-
-### Step 4 — Register the Study in Canopy *(Optional)*
+### Project Task 4 — Register the Study in Canopy *(Optional)*
 
 Use the generated metadata to populate a study in Canopy. This demonstrates how AI-generated metadata can support the complete submission workflow.
 
