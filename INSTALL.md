@@ -113,12 +113,12 @@ On Windows, Claude Desktop is at `%APPDATA%\Claude\claude_desktop_config.json` a
 In the client you just set up, ask the LLM (Claude, or whichever model you're using) to *"ping all
 four MCP servers."* Each one should answer with a `pong` and its build version — something like:
 
-| MCP server | Status | Build |
-|---|---|---|
-| cedar-artifact | ✅ pong | cedar-artifact-mcp 0.1.17 |
-| cedar-artifact-rest | ✅ pong | cedar-artifact-rest-mcp 0.1.17 |
-| cedar-cee | ✅ pong | cedar-cee-mcp 0.1.17 |
-| bioportal-term | ✅ pong | bioportal-term-mcp 0.1.17 |
+| MCP server          | Status   | Build                         |
+|---------------------|----------|-------------------------------|
+| cedar-artifact      | ✅ pong   | cedar-artifact-mcp 1.0.0      |
+| cedar-artifact-rest | ✅ pong   | cedar-artifact-rest-mcp 1.0.0 |
+| cedar-cee           | ✅ pong   | cedar-cee-mcp 1.0.0           |
+| bioportal-term      | ✅ pong   | bioportal-term-mcp 1.0.0      |
 
 If all four answer, the client started the servers and connected to them.
 
