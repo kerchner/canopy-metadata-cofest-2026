@@ -97,7 +97,7 @@ Create a new CEDAR template describing the metadata specific to the provided dat
 
 Populate the template created in Task 2 using information extracted from the provided datasets and documents.
 
-### Optional Task 4 — Register the study in Canopy
+### Project Task 4 — Register the study in Canopy
 
 Use the metadata you generated in the previous tasks to create and populate a study in Canopy. This demonstrates how AI-generated metadata can feed the complete submission workflow, from a metadata instance to a registered study.
 
@@ -113,18 +113,23 @@ For the exact steps, follow the Canopy documentation:
 - **[Canopy — Submission Workflow tutorial](https://canopy.stanford.edu/tutorial?tutorial=submissionWorkflow)** — walks through creating and submitting a study.
 - **[Canopy — Data Access Control tutorial](https://canopy.stanford.edu/tutorial?tutorial=dataAccessControl)** — covers configuring who can access the study and its data.
 
-### Final Task 5 — Apply your workflow to your own data
+### Project Task 5 — Apply your workflow to your own data
 
 If your team finishes the tasks above with time to spare, put your workflow to the test on **data and documents of your own choosing** — a dataset from your lab, a public dataset, a study you know well, or anything else that interests you.
 
 The goal is to demonstrate that the workflow you built is genuinely reusable, rather than tuned to the study we provided. Concretely:
 
-1. Select a dataset together with any accompanying documents (data dictionary, protocol, publication, README, …).
+1. Select a dataset together with any accompanying documents (data dictionary, protocol, publication, README).
 2. Design a metadata template for it (or reuse/adapt one from the earlier tasks).
 3. Run your pipeline end-to-end to populate the template from your chosen materials.
 4. Note what worked, what needed adjustment, and any gaps you had to fill by hand.
 
 This is a great candidate for your CoFest presentation: showing the pipeline applied to your *own* data makes the demo more compelling and highlights how the approach generalizes across studies and domains.
+
+### Project Task 6 — Evaluate your Workflow
+
+The goal is to build a tool to evaluate the quality of the generated template and metadata.
+This task is open in terms of the approach you choose. Once you complete this task, you might consider sharing your tool with other participants, so they can also evaluate the quality of their results.
 
 ## Deliverables
 
@@ -136,8 +141,9 @@ Examples of useful deliverables include:
 - AI workflows or pipelines that can be applied to multiple studies.
 - Agentic workflows combining MCP servers and LLMs.
 - Lessons learned, best practices, and common pitfalls.
-- (Optional) A study registered in Canopy using the generated metadata (Optional Task 4). 
-- (Optional) The workflow applied to a dataset of your own choosing (Final Task 5).
+- A study registered in Canopy using the generated metadata (Task 4). 
+- The workflow applied to a dataset of your own choosing (Task 5).
+- Your evaluation method (Task 6).
 
 ## Get Going
 
