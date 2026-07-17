@@ -2,6 +2,13 @@
 """
 canopy_pipeline.py — deterministic helper for the Canopy Study Metadata pipeline.
 
+Usage:
+1. Fetch a DOI/URI and emit a pre-filled mapping skeleton (with TODOs)
+`python canopy_pipeline.py fetch 10.18434/mds2-3633 -o rm8048-map.yaml`
+
+2. Build → validate → export JSON+YAML, and upload to CEDAR
+`python canopy_pipeline.py build rm8048-map.yaml --upload`
+
 Handles the mechanical steps of the pipeline described in
 `canopy-study-metadata-pipeline.md`:
 
